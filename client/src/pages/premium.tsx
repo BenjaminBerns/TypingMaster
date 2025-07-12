@@ -269,10 +269,10 @@ export default function Premium() {
                   <Button 
                     className={`w-full mt-6 ${
                       plan.popular 
-                        ? 'bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600' 
+                        ? 'bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white' 
                         : plan.name === 'Gratuit' 
                           ? 'bg-gray-200 text-gray-700 hover:bg-gray-300' 
-                          : 'bg-blue-600 hover:bg-blue-700'
+                          : 'bg-blue-600 hover:bg-blue-700 text-white'
                     }`}
                     onClick={() => handleSubscribe(plan.name)}
                     disabled={isLoading || plan.name === 'Gratuit'}

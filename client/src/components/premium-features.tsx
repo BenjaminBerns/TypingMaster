@@ -57,7 +57,7 @@ export function PremiumFeature({
         <CardContent className="relative z-10">
           <p className="text-gray-500 mb-4">{description}</p>
           <Link to="/premium">
-            <Button className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white">
+            <Button className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-medium">
               <Crown className="w-4 h-4 mr-2" />
               Débloquer
             </Button>

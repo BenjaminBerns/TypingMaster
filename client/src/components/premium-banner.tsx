@@ -81,7 +81,7 @@ export function PremiumBanner({ context = 'general', onDismiss }: PremiumBannerP
             
             <div className="flex gap-3">
               <Link to="/premium">
-                <Button className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white">
+                <Button className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-medium">
                   <Crown className="w-4 h-4 mr-2" />
                   Découvrir Premium
                 </Button>
