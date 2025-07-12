@@ -191,9 +191,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const { region = 'world', timeRange = 'all-time' } = req.query;
       
-      // Mock leaderboard data for demonstration
+      // Mock leaderboard data for demonstration - sorted by WPM
       const mockData = Array.from({ length: 20 }, (_, i) => ({
-        rank: i + 1,
         userId: `user-${i + 1}`,
         username: `Utilisateur ${i + 1}`,
         wpm: Math.floor(Math.random() * 50) + 80,
@@ -202,13 +201,80 @@ export async function registerRoutes(app: Express): Promise<Server> {
         country: 'France',
         continent: 'Europe',
         isPremium: Math.random() > 0.7,
-        profileImage: null
+        profileImage: null,
+        averageWpm: Math.floor(Math.random() * 40) + 70,
+        bestWpm: Math.floor(Math.random() * 60) + 90,
+        totalWords: Math.floor(Math.random() * 50000) + 10000,
+        joinDate: new Date(Date.now() - Math.random() * 365 * 24 * 60 * 60 * 1000).toISOString()
+      }))
+      .sort((a, b) => b.wpm - a.wpm) // Sort by WPM descending
+      .map((user, index) => ({
+        ...user,
+        rank: index + 1 // Assign rank based on sorted position
       }));
       
       res.json(mockData);
     } catch (error) {
       console.error('Error fetching leaderboard:', error);
       res.status(500).json({ message: 'Failed to fetch leaderboard' });
+    }
+  });
+
+  // User profile routes
+  app.get('/api/users/:userId', async (req, res) => {
+    try {
+      const { userId } = req.params;
+      
+      // Mock user profile data for demonstration
+      const mockProfile = {
+        userId: userId,
+        username: `Utilisateur ${userId}`,
+        wpm: Math.floor(Math.random() * 50) + 80,
+        accuracy: Math.floor(Math.random() * 10) + 90,
+        tests: Math.floor(Math.random() * 500) + 50,
+        country: 'France',
+        continent: 'Europe',
+        isPremium: Math.random() > 0.7,
+        profileImage: null,
+        averageWpm: Math.floor(Math.random() * 40) + 70,
+        bestWpm: Math.floor(Math.random() * 60) + 90,
+        totalWords: Math.floor(Math.random() * 50000) + 10000,
+        joinDate: new Date(Date.now() - Math.random() * 365 * 24 * 60 * 60 * 1000).toISOString(),
+        rank: Math.floor(Math.random() * 100) + 1,
+        totalTimeTyping: Math.floor(Math.random() * 1000) + 500,
+        favoriteLanguage: 'Français',
+        recentTests: [
+          { 
+            id: '1', 
+            wpm: Math.floor(Math.random() * 50) + 80, 
+            accuracy: Math.floor(Math.random() * 10) + 90, 
+            date: new Date().toISOString(), 
+            mode: '3min', 
+            language: 'fr' 
+          },
+          { 
+            id: '2', 
+            wpm: Math.floor(Math.random() * 50) + 80, 
+            accuracy: Math.floor(Math.random() * 10) + 90, 
+            date: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(), 
+            mode: '1min', 
+            language: 'fr' 
+          },
+          { 
+            id: '3', 
+            wpm: Math.floor(Math.random() * 50) + 80, 
+            accuracy: Math.floor(Math.random() * 10) + 90, 
+            date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(), 
+            mode: '5min', 
+            language: 'en' 
+          }
+        ]
+      };
+      
+      res.json(mockProfile);
+    } catch (error) {
+      console.error('Error fetching user profile:', error);
+      res.status(500).json({ message: 'Failed to fetch user profile' });
     }
   });
 
