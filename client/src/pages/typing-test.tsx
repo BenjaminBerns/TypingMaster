@@ -44,9 +44,13 @@ export default function TypingTest() {
 
   const handleStart = async () => {
     try {
-      await refetchText();
-      if (textData?.text) {
-        startTest(textData.text);
+      const result = await refetchText();
+      if (result.data?.text) {
+        startTest(result.data.text);
+      } else {
+        // Fallback to default text
+        const fallbackText = "La programmation est l'art de dire à un ordinateur ce qu'il doit faire. C'est un processus créatif qui combine logique et imagination.";
+        startTest(fallbackText);
       }
     } catch (error) {
       console.error('Error fetching text:', error);

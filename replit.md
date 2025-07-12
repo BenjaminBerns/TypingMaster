@@ -8,6 +8,12 @@ This is a modern typing test application built with React and Express, featuring
 
 Preferred communication style: Simple, everyday language.
 
+## Recent Changes
+
+- **January 12, 2025**: Created comprehensive typing test application with full functionality
+- **January 12, 2025**: Fixed keyboard layout warnings and button start functionality
+- **January 12, 2025**: Implemented all requested features including virtual keyboard, performance tracking, and multilingual support
+
 ## System Architecture
 
 ### Frontend Architecture

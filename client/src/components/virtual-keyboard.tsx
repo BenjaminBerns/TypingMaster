@@ -75,9 +75,9 @@ export function VirtualKeyboard({ lastKeyPressed }: VirtualKeyboardProps) {
         <div className="space-y-2">
           {keyboardLayout.map((row, rowIndex) => (
             <div key={rowIndex} className="flex justify-center space-x-1">
-              {row.map((key) => (
+              {row.map((key, keyIndex) => (
                 <div
-                  key={key}
+                  key={`${rowIndex}-${keyIndex}-${key}`}
                   className={getKeyClass(key)}
                   data-key={key}
                 >
