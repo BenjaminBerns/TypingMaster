@@ -24,6 +24,8 @@ import { useAuth } from '@/hooks/useAuth';
 import { Link } from 'wouter';
 
 type Region = 'world' | 'continent' | 'country';
+type Continent = 'Europe' | 'Amérique du Nord' | 'Amérique du Sud' | 'Asie' | 'Afrique' | 'Océanie';
+type Country = 'France' | 'Canada' | 'Belgique' | 'Suisse' | 'États-Unis' | 'Royaume-Uni' | 'Allemagne' | 'Espagne' | 'Italie' | 'Brésil';
 type TimeRange = 'all-time' | 'year' | 'month' | 'week' | 'day';
 
 interface LeaderboardEntry {
@@ -49,6 +51,28 @@ const regions = [
   { value: 'country', label: 'Pays', icon: <MapPin className="w-4 h-4" /> }
 ];
 
+const continents = [
+  { value: 'Europe', label: 'Europe' },
+  { value: 'Amérique du Nord', label: 'Amérique du Nord' },
+  { value: 'Amérique du Sud', label: 'Amérique du Sud' },
+  { value: 'Asie', label: 'Asie' },
+  { value: 'Afrique', label: 'Afrique' },
+  { value: 'Océanie', label: 'Océanie' }
+];
+
+const countries = [
+  { value: 'France', label: 'France' },
+  { value: 'Canada', label: 'Canada' },
+  { value: 'Belgique', label: 'Belgique' },
+  { value: 'Suisse', label: 'Suisse' },
+  { value: 'États-Unis', label: 'États-Unis' },
+  { value: 'Royaume-Uni', label: 'Royaume-Uni' },
+  { value: 'Allemagne', label: 'Allemagne' },
+  { value: 'Espagne', label: 'Espagne' },
+  { value: 'Italie', label: 'Italie' },
+  { value: 'Brésil', label: 'Brésil' }
+];
+
 const timeRanges = [
   { value: 'all-time', label: 'Depuis toujours', icon: <Clock className="w-4 h-4" /> },
   { value: 'year', label: 'Cette année', icon: <Calendar className="w-4 h-4" /> },
@@ -60,10 +84,12 @@ const timeRanges = [
 export default function Leaderboard() {
   const { user, isAuthenticated } = useAuth();
   const [selectedRegion, setSelectedRegion] = useState<Region>('world');
+  const [selectedContinent, setSelectedContinent] = useState<Continent>('Europe');
+  const [selectedCountry, setSelectedCountry] = useState<Country>('France');
   const [selectedTimeRange, setSelectedTimeRange] = useState<TimeRange>('all-time');
 
   const { data: leaderboard, isLoading } = useQuery({
-    queryKey: ['/api/leaderboard', selectedRegion, selectedTimeRange],
+    queryKey: ['/api/leaderboard', selectedRegion, selectedContinent, selectedCountry, selectedTimeRange],
     retry: false,
   });
 
@@ -81,7 +107,10 @@ export default function Leaderboard() {
   };
 
   const getRegionLabel = (region: Region) => {
-    return regions.find(r => r.value === region)?.label || 'Monde';
+    if (region === 'world') return 'Monde';
+    if (region === 'continent') return selectedContinent;
+    if (region === 'country') return selectedCountry;
+    return 'Monde';
   };
 
   const getTimeRangeLabel = (timeRange: TimeRange) => {
@@ -124,7 +153,7 @@ export default function Leaderboard() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                   <label className="block text-sm font-medium mb-2">Région</label>
                   <Select value={selectedRegion} onValueChange={(value: Region) => setSelectedRegion(value)}>
@@ -143,6 +172,43 @@ export default function Leaderboard() {
                     </SelectContent>
                   </Select>
                 </div>
+                
+                {selectedRegion === 'continent' && (
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Continent</label>
+                    <Select value={selectedContinent} onValueChange={(value: Continent) => setSelectedContinent(value)}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Sélectionnez un continent" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {continents.map((continent) => (
+                          <SelectItem key={continent.value} value={continent.value}>
+                            {continent.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
+                
+                {selectedRegion === 'country' && (
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Pays</label>
+                    <Select value={selectedCountry} onValueChange={(value: Country) => setSelectedCountry(value)}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Sélectionnez un pays" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {countries.map((country) => (
+                          <SelectItem key={country.value} value={country.value}>
+                            {country.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
+                
                 <div>
                   <label className="block text-sm font-medium mb-2">Période</label>
                   <Select value={selectedTimeRange} onValueChange={(value: TimeRange) => setSelectedTimeRange(value)}>

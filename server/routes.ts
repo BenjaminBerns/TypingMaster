@@ -189,24 +189,61 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Leaderboard routes
   app.get('/api/leaderboard', async (req, res) => {
     try {
-      const { region = 'world', timeRange = 'all-time' } = req.query;
+      const { region = 'world', continent = 'Europe', country = 'France', timeRange = 'all-time' } = req.query;
+      
+      // Generate different data based on filters
+      const getCountryList = (selectedRegion: string, selectedContinent: string, selectedCountry: string) => {
+        if (selectedRegion === 'world') {
+          return ['France', 'Canada', 'Belgique', 'Suisse', 'États-Unis', 'Royaume-Uni', 'Allemagne', 'Espagne', 'Italie', 'Brésil'];
+        } else if (selectedRegion === 'continent') {
+          const continentCountries: Record<string, string[]> = {
+            'Europe': ['France', 'Belgique', 'Suisse', 'Royaume-Uni', 'Allemagne', 'Espagne', 'Italie'],
+            'Amérique du Nord': ['Canada', 'États-Unis'],
+            'Amérique du Sud': ['Brésil'],
+            'Asie': ['Japon', 'Corée du Sud', 'Chine'],
+            'Afrique': ['Maroc', 'Tunisie', 'Algérie'],
+            'Océanie': ['Australie', 'Nouvelle-Zélande']
+          };
+          return continentCountries[selectedContinent as string] || ['France'];
+        } else {
+          return [selectedCountry as string];
+        }
+      };
+      
+      const availableCountries = getCountryList(region as string, continent as string, country as string);
       
       // Mock leaderboard data for demonstration - sorted by WPM
-      const mockData = Array.from({ length: 20 }, (_, i) => ({
-        userId: `user-${i + 1}`,
-        username: `Utilisateur ${i + 1}`,
-        wpm: Math.floor(Math.random() * 50) + 80,
-        accuracy: Math.floor(Math.random() * 10) + 90,
-        tests: Math.floor(Math.random() * 500) + 50,
-        country: 'France',
-        continent: 'Europe',
-        isPremium: Math.random() > 0.7,
-        profileImage: null,
-        averageWpm: Math.floor(Math.random() * 40) + 70,
-        bestWpm: Math.floor(Math.random() * 60) + 90,
-        totalWords: Math.floor(Math.random() * 50000) + 10000,
-        joinDate: new Date(Date.now() - Math.random() * 365 * 24 * 60 * 60 * 1000).toISOString()
-      }))
+      const mockData = Array.from({ length: 20 }, (_, i) => {
+        const randomCountry = availableCountries[Math.floor(Math.random() * availableCountries.length)];
+        const getContinentFromCountry = (country: string) => {
+          const continentMap: Record<string, string> = {
+            'France': 'Europe', 'Belgique': 'Europe', 'Suisse': 'Europe', 'Royaume-Uni': 'Europe', 
+            'Allemagne': 'Europe', 'Espagne': 'Europe', 'Italie': 'Europe',
+            'Canada': 'Amérique du Nord', 'États-Unis': 'Amérique du Nord',
+            'Brésil': 'Amérique du Sud',
+            'Japon': 'Asie', 'Corée du Sud': 'Asie', 'Chine': 'Asie',
+            'Maroc': 'Afrique', 'Tunisie': 'Afrique', 'Algérie': 'Afrique',
+            'Australie': 'Océanie', 'Nouvelle-Zélande': 'Océanie'
+          };
+          return continentMap[country] || 'Europe';
+        };
+        
+        return {
+          userId: `user-${i + 1}`,
+          username: `Utilisateur ${i + 1}`,
+          wpm: Math.floor(Math.random() * 50) + 80,
+          accuracy: Math.floor(Math.random() * 10) + 90,
+          tests: Math.floor(Math.random() * 500) + 50,
+          country: randomCountry,
+          continent: getContinentFromCountry(randomCountry),
+          isPremium: Math.random() > 0.7,
+          profileImage: null,
+          averageWpm: Math.floor(Math.random() * 40) + 70,
+          bestWpm: Math.floor(Math.random() * 60) + 90,
+          totalWords: Math.floor(Math.random() * 50000) + 10000,
+          joinDate: new Date(Date.now() - Math.random() * 365 * 24 * 60 * 60 * 1000).toISOString()
+        };
+      })
       .sort((a, b) => b.wpm - a.wpm) // Sort by WPM descending
       .map((user, index) => ({
         ...user,
