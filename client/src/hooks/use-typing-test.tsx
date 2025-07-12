@@ -146,10 +146,18 @@ export function useTypingTest() {
         }
       }
 
-      // Check if test is completed (for word mode or if all text is typed)
+      // For time-based modes, if we're near the end of text, generate more
+      if (prev.mode !== 'words' && newPosition >= prev.textToType.length - 20) {
+        // This will be handled by the component to fetch more text
+        // For now, just allow continuing past the end
+      }
+
+      // Check if test is completed
+      // For word mode: completed when all text is typed
+      // For time modes: completed only when time runs out (allow infinite typing)
       const isCompleted = prev.mode === 'words' ? 
         newPosition >= prev.textToType.length : 
-        (prev.timeRemaining <= 0 || newPosition >= prev.textToType.length);
+        prev.timeRemaining <= 0;
 
       const elapsed = Math.floor((Date.now() - startTime) / 1000);
       const wpm = calculateWPM(newPosition, elapsed);
@@ -195,11 +203,20 @@ export function useTypingTest() {
     }));
   }, [getTimeLimit]);
 
+  // Function to extend text for time-based modes
+  const extendText = useCallback((additionalText: string) => {
+    setState(prev => ({
+      ...prev,
+      textToType: prev.textToType + " " + additionalText,
+    }));
+  }, []);
+
   return {
     state,
     startTest,
     handleKeyPress,
     resetTest,
     updateSettings,
+    extendText,
   };
 }

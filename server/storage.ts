@@ -1,41 +1,78 @@
-import { testResults, type TestResult, type InsertTestResult } from "@shared/schema";
+import {
+  users,
+  testResults,
+  type User,
+  type UpsertUser,
+  type TestResult,
+  type InsertTestResult,
+} from "@shared/schema";
+import { db } from "./db";
+import { eq, desc } from "drizzle-orm";
 
+// Interface for storage operations
 export interface IStorage {
+  // User operations
+  // (IMPORTANT) these user operations are mandatory for Replit Auth.
+  getUser(id: string): Promise<User | undefined>;
+  upsertUser(user: UpsertUser): Promise<User>;
+  // Test results operations
   createTestResult(result: InsertTestResult): Promise<TestResult>;
   getTestResults(limit?: number): Promise<TestResult[]>;
   getUserTestResults(userId?: string, limit?: number): Promise<TestResult[]>;
 }
 
-export class MemStorage implements IStorage {
-  private testResults: Map<number, TestResult>;
-  private currentId: number;
+export class DatabaseStorage implements IStorage {
+  // User operations
+  // (IMPORTANT) these user operations are mandatory for Replit Auth.
 
-  constructor() {
-    this.testResults = new Map();
-    this.currentId = 1;
+  async getUser(id: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user;
   }
 
-  async createTestResult(insertResult: InsertTestResult): Promise<TestResult> {
-    const id = this.currentId++;
-    const result: TestResult = {
-      ...insertResult,
-      id,
-      createdAt: new Date(),
-    };
-    this.testResults.set(id, result);
-    return result;
+  async upsertUser(userData: UpsertUser): Promise<User> {
+    const [user] = await db
+      .insert(users)
+      .values(userData)
+      .onConflictDoUpdate({
+        target: users.id,
+        set: {
+          ...userData,
+          updatedAt: new Date(),
+        },
+      })
+      .returning();
+    return user;
+  }
+
+  // Test results operations
+  async createTestResult(result: InsertTestResult): Promise<TestResult> {
+    const [testResult] = await db
+      .insert(testResults)
+      .values(result)
+      .returning();
+    return testResult;
   }
 
   async getTestResults(limit: number = 50): Promise<TestResult[]> {
-    return Array.from(this.testResults.values())
-      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
-      .slice(0, limit);
+    return await db
+      .select()
+      .from(testResults)
+      .orderBy(desc(testResults.createdAt))
+      .limit(limit);
   }
 
   async getUserTestResults(userId?: string, limit: number = 50): Promise<TestResult[]> {
-    // In a real app, we would filter by userId
-    return this.getTestResults(limit);
+    if (!userId) {
+      return [];
+    }
+    return await db
+      .select()
+      .from(testResults)
+      .where(eq(testResults.userId, userId))
+      .orderBy(desc(testResults.createdAt))
+      .limit(limit);
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();

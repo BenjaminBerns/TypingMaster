@@ -1,9 +1,47 @@
-import { pgTable, text, serial, integer, real, timestamp } from "drizzle-orm/pg-core";
+import {
+  pgTable,
+  text,
+  varchar,
+  timestamp,
+  jsonb,
+  index,
+  serial,
+  integer,
+  real,
+} from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+// Session storage table.
+// (IMPORTANT) This table is mandatory for Replit Auth, don't drop it.
+export const sessions = pgTable(
+  "sessions",
+  {
+    sid: varchar("sid").primaryKey(),
+    sess: jsonb("sess").notNull(),
+    expire: timestamp("expire").notNull(),
+  },
+  (table) => [index("IDX_session_expire").on(table.expire)],
+);
+
+// User storage table.
+// (IMPORTANT) This table is mandatory for Replit Auth, don't drop it.
+export const users = pgTable("users", {
+  id: varchar("id").primaryKey().notNull(),
+  email: varchar("email").unique(),
+  firstName: varchar("first_name"),
+  lastName: varchar("last_name"),
+  profileImageUrl: varchar("profile_image_url"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export type UpsertUser = typeof users.$inferInsert;
+export type User = typeof users.$inferSelect;
+
 export const testResults = pgTable("test_results", {
   id: serial("id").primaryKey(),
+  userId: varchar("user_id").references(() => users.id),
   wpm: real("wpm").notNull(),
   accuracy: real("accuracy").notNull(),
   errors: integer("errors").notNull(),
@@ -12,6 +50,7 @@ export const testResults = pgTable("test_results", {
   language: text("language").notNull(), // "fr", "en", "es", "de"
   duration: integer("duration").notNull(), // in seconds
   charactersTyped: integer("characters_typed").notNull(),
+  wordsTyped: integer("words_typed").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 

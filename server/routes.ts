@@ -1,10 +1,36 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
+import { setupAuth, isAuthenticated } from "./replitAuth";
 import { insertTestResultSchema } from "@shared/schema";
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Auth middleware
+  await setupAuth(app);
+
+  // Auth routes
+  app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      res.json(user);
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      res.status(500).json({ message: "Failed to fetch user" });
+    }
+  });
+
+  app.get("/api/user/test-results", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const results = await storage.getUserTestResults(userId);
+      res.json(results);
+    } catch (error) {
+      console.error("Error fetching user test results:", error);
+      res.status(500).json({ error: "Failed to fetch user test results" });
+    }
+  });
   // Get test results
   app.get("/api/test-results", async (req, res) => {
     try {
@@ -19,7 +45,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Create test result
   app.post("/api/test-results", async (req, res) => {
     try {
-      const data = insertTestResultSchema.parse(req.body);
+      // Add userId if user is authenticated
+      let testData = req.body;
+      if (req.isAuthenticated() && req.user) {
+        testData = { ...testData, userId: (req.user as any).claims.sub };
+      }
+      
+      const data = insertTestResultSchema.parse(testData);
       const result = await storage.createTestResult(data);
       res.json(result);
     } catch (error) {
@@ -33,7 +65,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Get text samples endpoint
   app.get("/api/text-samples", async (req, res) => {
-    const { language = "fr", difficulty = "medium" } = req.query;
+    const { language = "fr", difficulty = "medium", mode = "words" } = req.query;
     
     const textSamples = {
       fr: {
@@ -120,23 +152,38 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
     const samples = textSamples[language as keyof typeof textSamples]?.[difficulty as keyof typeof textSamples.fr] || textSamples.fr.medium;
     
-    // Generate truly random text by combining multiple samples and shuffling
-    const randomIndex = Math.floor(Math.random() * samples.length);
-    let randomSample = samples[randomIndex];
-    
-    // Add timestamp to ensure uniqueness
-    const timestamp = Date.now().toString().slice(-4);
-    
-    // For random difficulty, pick from all difficulties
-    if (difficulty === 'random') {
-      const allDifficulties = ['easy', 'medium', 'hard'];
-      const randomDifficulty = allDifficulties[Math.floor(Math.random() * allDifficulties.length)];
-      const randomDifficultySamples = textSamples[language as keyof typeof textSamples]?.[randomDifficulty as keyof typeof textSamples.fr] || textSamples.fr.medium;
-      const randomDifficultyIndex = Math.floor(Math.random() * randomDifficultySamples.length);
-      randomSample = randomDifficultySamples[randomDifficultyIndex];
+    // For time-based modes, generate longer text by combining multiple sentences
+    if (mode === "1min" || mode === "3min" || mode === "5min") {
+      let combinedText = "";
+      const targetLength = mode === "1min" ? 400 : mode === "3min" ? 1200 : 2000;
+      
+      // Shuffle samples to create variety
+      const shuffledSamples = [...samples].sort(() => Math.random() - 0.5);
+      
+      while (combinedText.length < targetLength) {
+        for (const sample of shuffledSamples) {
+          combinedText += (combinedText ? " " : "") + sample;
+          if (combinedText.length >= targetLength) break;
+        }
+      }
+      
+      res.json({ text: combinedText });
+    } else {
+      // For word mode, return a single sentence
+      const randomIndex = Math.floor(Math.random() * samples.length);
+      let randomSample = samples[randomIndex];
+      
+      // For random difficulty, pick from all difficulties
+      if (difficulty === 'random') {
+        const allDifficulties = ['easy', 'medium', 'hard'];
+        const randomDifficulty = allDifficulties[Math.floor(Math.random() * allDifficulties.length)];
+        const randomDifficultySamples = textSamples[language as keyof typeof textSamples]?.[randomDifficulty as keyof typeof textSamples.fr] || textSamples.fr.medium;
+        const randomDifficultyIndex = Math.floor(Math.random() * randomDifficultySamples.length);
+        randomSample = randomDifficultySamples[randomDifficultyIndex];
+      }
+      
+      res.json({ text: randomSample });
     }
-    
-    res.json({ text: randomSample, timestamp });
   });
 
   const httpServer = createServer(app);

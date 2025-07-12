@@ -1,22 +1,28 @@
-import { useState, useEffect } from 'react';
-import { Keyboard, BarChart3, History, Settings } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Keyboard, BarChart3, History, Settings, User, LogOut } from 'lucide-react';
 import { TestConfig } from '@/components/test-config';
 import { StatsDashboard } from '@/components/stats-dashboard';
 import { TypingArea } from '@/components/typing-area';
 import { VirtualKeyboard } from '@/components/virtual-keyboard';
 import { PerformanceHistory } from '@/components/performance-history';
 import { useTypingTest } from '@/hooks/use-typing-test';
-import { usePerformanceHistory } from '@/hooks/use-performance-history';
+import { useTestResults } from '@/hooks/use-test-results';
+import { useAuth } from '@/hooks/useAuth';
 import { useQuery } from '@tanstack/react-query';
+import { Button } from '@/components/ui/button';
+import { Link } from 'wouter';
 
 export default function TypingTest() {
-  const { state, startTest, handleKeyPress, resetTest, updateSettings } = useTypingTest();
-  const { addResult } = usePerformanceHistory();
+  const { state, startTest, handleKeyPress, resetTest, updateSettings, extendText } = useTypingTest();
+  const { saveTestResult, isSaving } = useTestResults();
+  const { user, isAuthenticated } = useAuth();
   const [currentText, setCurrentText] = useState('');
+  const resultSavedRef = useRef(false);
+  const isExtendingText = useRef(false);
 
   // Fetch text sample when settings change
   const { data: textData, refetch: refetchText } = useQuery({
-    queryKey: ['/api/text-samples', state.language, state.difficulty],
+    queryKey: ['/api/text-samples', state.language, state.difficulty, state.mode],
     enabled: false,
   });
 
@@ -26,21 +32,60 @@ export default function TypingTest() {
     }
   }, [textData]);
 
-  // Save result when test is completed
+  // Save result when test is completed (only once)
   useEffect(() => {
-    if (state.isCompleted && state.timeElapsed > 0) {
-      addResult({
-        wpm: state.wpm,
-        accuracy: state.accuracy,
+    if (state.isCompleted && state.timeElapsed > 0 && !resultSavedRef.current) {
+      resultSavedRef.current = true;
+      
+      const wordsTyped = Math.floor(state.currentPosition / 5); // Standard calculation: 5 characters = 1 word
+      
+      saveTestResult({
+        wpm: Math.round(state.wpm),
+        accuracy: Math.round(state.accuracy),
         errors: state.errors,
         mode: state.mode,
         difficulty: state.difficulty,
         language: state.language,
         duration: state.timeElapsed,
         charactersTyped: state.currentPosition,
+        wordsTyped,
       });
     }
-  }, [state.isCompleted, state.wpm, state.accuracy, state.errors, state.mode, state.difficulty, state.language, state.timeElapsed, state.currentPosition, addResult]);
+  }, [state.isCompleted, state.wpm, state.accuracy, state.errors, state.mode, state.difficulty, state.language, state.timeElapsed, state.currentPosition, saveTestResult]);
+
+  // Reset the result saved flag when test is reset
+  useEffect(() => {
+    if (!state.isCompleted) {
+      resultSavedRef.current = false;
+    }
+  }, [state.isCompleted]);
+
+  // Extend text for time-based modes when approaching the end
+  useEffect(() => {
+    if (state.isActive && 
+        !state.isCompleted && 
+        (state.mode === '1min' || state.mode === '3min' || state.mode === '5min') &&
+        state.currentPosition >= state.textToType.length - 50 && 
+        !isExtendingText.current) {
+      
+      isExtendingText.current = true;
+      
+      // Fetch more text to extend the current text
+      fetch(`/api/text-samples?language=${state.language}&difficulty=${state.difficulty}&mode=${state.mode}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.text) {
+            extendText(data.text);
+          }
+        })
+        .catch(error => {
+          console.error('Error extending text:', error);
+        })
+        .finally(() => {
+          isExtendingText.current = false;
+        });
+    }
+  }, [state.isActive, state.isCompleted, state.mode, state.currentPosition, state.textToType.length, state.language, state.difficulty, extendText]);
 
   const handleStart = async () => {
     try {
@@ -81,10 +126,33 @@ export default function TypingTest() {
                 <History className="w-4 h-4 mr-2 inline" />
                 Historique
               </a>
-              <a href="#settings" className="text-gray-600 hover:text-blue-500 transition-colors">
-                <Settings className="w-4 h-4 mr-2 inline" />
-                Paramètres
-              </a>
+              {isAuthenticated ? (
+                <div className="flex items-center space-x-4">
+                  <Link href="/profile">
+                    <Button variant="ghost" size="sm">
+                      <User className="w-4 h-4 mr-2" />
+                      Profil
+                    </Button>
+                  </Link>
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
+                    onClick={() => window.location.href = "/api/logout"}
+                  >
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Déconnexion
+                  </Button>
+                </div>
+              ) : (
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => window.location.href = "/api/login"}
+                >
+                  <User className="w-4 h-4 mr-2" />
+                  Se connecter
+                </Button>
+              )}
             </nav>
           </div>
         </div>
