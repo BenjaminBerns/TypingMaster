@@ -10,6 +10,9 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes
 
+- **January 12, 2025**: Added challenge system with visual progress indicators and target WPM markers
+- **January 12, 2025**: Fixed Premium button color contrast issue (white text on white background)
+- **January 12, 2025**: Implemented user challenge functionality with URL parameters and progress tracking
 - **January 12, 2025**: Fixed leaderboard filtering system with comprehensive test data (100 users from 30+ countries)
 - **January 12, 2025**: Added dynamic region-specific filtering (World/Continent/Country selection)
 - **January 12, 2025**: Implemented realistic user profiles with country-specific names and performance data

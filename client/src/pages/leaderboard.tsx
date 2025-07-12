@@ -421,7 +421,7 @@ export default function Leaderboard() {
                     </Button>
                   </Link>
                   <Link to="/premium">
-                    <Button variant="outline" className="border-white text-white hover:bg-white hover:text-green-600">
+                    <Button variant="outline" className="border-white text-white hover:bg-white hover:text-blue-600">
                       <Crown className="w-4 h-4 mr-2" />
                       Devenir Premium
                     </Button>

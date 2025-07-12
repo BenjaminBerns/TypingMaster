@@ -26,6 +26,12 @@ export default function TypingTest() {
   const isExtendingText = useRef(false);
   const [showSignupModal, setShowSignupModal] = useState(false);
   const hasCompletedFirstTest = useRef(false);
+  
+  // Challenge parameters from URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const challengeUserId = urlParams.get('challenge');
+  const challengeTarget = urlParams.get('target');
+  const targetWpm = challengeTarget ? parseInt(challengeTarget) : null;
 
   // Fetch text sample when settings change
   const { data: textData, refetch: refetchText } = useQuery({
@@ -221,6 +227,8 @@ export default function TypingTest() {
             timeRemaining={state.timeRemaining}
             timeElapsed={state.timeElapsed}
             mode={state.mode}
+            targetWpm={targetWpm}
+            challengeUserId={challengeUserId}
           />
         </div>
 

@@ -274,10 +274,10 @@ export default function UserProfile() {
           <Card>
             <CardContent className="pt-6">
               <div className="flex gap-4 justify-center">
-                <Link href="/">
+                <Link href={`/?challenge=${profile.userId}&target=${profile.wpm}`}>
                   <Button className="bg-blue-600 hover:bg-blue-700">
                     <Target className="w-4 h-4 mr-2" />
-                    Défier cet utilisateur
+                    Défier cet utilisateur ({profile.wpm} WPM)
                   </Button>
                 </Link>
                 <Link href="/leaderboard">
