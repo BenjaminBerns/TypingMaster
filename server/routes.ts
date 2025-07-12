@@ -40,17 +40,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
         easy: [
           "Le chat mange sa nourriture. Il fait beau aujourd'hui. La maison est grande. Les enfants jouent dans le jardin.",
           "La voiture roule sur la route. Le soleil brille dans le ciel. Les oiseaux chantent dans les arbres.",
-          "Ma famille aime regarder des films. Nous mangeons du pain avec du beurre. Le chien court dans le parc."
+          "Ma famille aime regarder des films. Nous mangeons du pain avec du beurre. Le chien court dans le parc.",
+          "Les fleurs poussent dans le jardin. Le livre est sur la table. Mon ami habite près d'ici.",
+          "La cuisine sent bon. Les vacances arrivent bientôt. J'aime me promener le matin.",
+          "Le train part à huit heures. Cette chanson me plaît beaucoup. L'école ouvre ses portes.",
+          "Les nuages cachent le soleil. Mon téléphone sonne souvent. La mer est calme aujourd'hui."
         ],
         medium: [
           "La programmation est l'art de dire à un ordinateur ce qu'il doit faire. C'est un processus créatif qui combine logique et imagination pour résoudre des problèmes complexes.",
           "L'intelligence artificielle transforme notre façon de travailler et de vivre. Les algorithmes d'apprentissage automatique permettent aux machines de s'améliorer continuellement.",
-          "La révolution numérique a changé notre société de manière fondamentale. Les technologies émergentes offrent de nouvelles opportunités mais posent aussi des défis importants."
+          "La révolution numérique a changé notre société de manière fondamentale. Les technologies émergentes offrent de nouvelles opportunités mais posent aussi des défis importants.",
+          "L'environnement est devenu une préoccupation majeure de notre époque. Les changements climatiques affectent tous les aspects de notre vie quotidienne.",
+          "L'éducation moderne doit s'adapter aux nouvelles réalités du monde numérique. Les étudiants d'aujourd'hui apprennent différemment de leurs parents.",
+          "La médecine personnalisée promet de révolutionner les traitements. Chaque patient pourra bénéficier d'un plan de soins adapté à son profil génétique.",
+          "L'économie collaborative transforme notre rapport à la consommation. Partager plutôt que posséder devient une tendance de fond."
         ],
         hard: [
           "L'algorithme de tri rapide utilise une approche diviser-pour-régner, partitionnant récursivement les éléments selon un pivot choisi judicieusement pour optimiser la complexité temporelle.",
           "Les structures de données sophistiquées comme les arbres équilibrés et les tables de hachage permettent d'atteindre des performances optimales dans les opérations de recherche et d'insertion.",
-          "L'architecture microservices décompose les applications monolithiques en services indépendants, facilitant la scalabilité et la maintenance mais introduisant une complexité supplémentaire."
+          "L'architecture microservices décompose les applications monolithiques en services indépendants, facilitant la scalabilité et la maintenance mais introduisant une complexité supplémentaire.",
+          "La théorie de la complexité computationnelle étudie les ressources nécessaires pour résoudre des problèmes algorithmiques, notamment en termes de temps d'exécution et d'espace mémoire.",
+          "Les protocoles de consensus distribués comme Raft et Byzantine Fault Tolerance garantissent la cohérence des données dans les systèmes répartis malgré les défaillances possibles.",
+          "L'optimisation combinatoire cherche à trouver la meilleure solution parmi un ensemble fini de possibilités, souvent en utilisant des heuristiques et des métaheuristiques.",
+          "Les réseaux de neurones convolutionnels exploitent la structure spatiale des données pour extraire automatiquement des caractéristiques pertinentes lors de l'apprentissage profond."
         ]
       },
       en: {
@@ -107,9 +119,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
     };
 
     const samples = textSamples[language as keyof typeof textSamples]?.[difficulty as keyof typeof textSamples.fr] || textSamples.fr.medium;
-    const randomSample = samples[Math.floor(Math.random() * samples.length)];
     
-    res.json({ text: randomSample });
+    // Generate truly random text by combining multiple samples and shuffling
+    const randomIndex = Math.floor(Math.random() * samples.length);
+    let randomSample = samples[randomIndex];
+    
+    // Add timestamp to ensure uniqueness
+    const timestamp = Date.now().toString().slice(-4);
+    
+    // For random difficulty, pick from all difficulties
+    if (difficulty === 'random') {
+      const allDifficulties = ['easy', 'medium', 'hard'];
+      const randomDifficulty = allDifficulties[Math.floor(Math.random() * allDifficulties.length)];
+      const randomDifficultySamples = textSamples[language as keyof typeof textSamples]?.[randomDifficulty as keyof typeof textSamples.fr] || textSamples.fr.medium;
+      const randomDifficultyIndex = Math.floor(Math.random() * randomDifficultySamples.length);
+      randomSample = randomDifficultySamples[randomDifficultyIndex];
+    }
+    
+    res.json({ text: randomSample, timestamp });
   });
 
   const httpServer = createServer(app);

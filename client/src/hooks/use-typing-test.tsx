@@ -149,7 +149,7 @@ export function useTypingTest() {
       // Check if test is completed (for word mode or if all text is typed)
       const isCompleted = prev.mode === 'words' ? 
         newPosition >= prev.textToType.length : 
-        prev.timeRemaining <= 0;
+        (prev.timeRemaining <= 0 || newPosition >= prev.textToType.length);
 
       const elapsed = Math.floor((Date.now() - startTime) / 1000);
       const wpm = calculateWPM(newPosition, elapsed);

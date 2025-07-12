@@ -13,6 +13,8 @@ Preferred communication style: Simple, everyday language.
 - **January 12, 2025**: Created comprehensive typing test application with full functionality
 - **January 12, 2025**: Fixed keyboard layout warnings and button start functionality
 - **January 12, 2025**: Implemented all requested features including virtual keyboard, performance tracking, and multilingual support
+- **January 12, 2025**: Fixed test completion logic - now ends automatically when text is fully typed
+- **January 12, 2025**: Enhanced text randomization with 7 samples per difficulty level for better variety
 
 ## System Architecture
 
