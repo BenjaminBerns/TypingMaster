@@ -41,6 +41,16 @@ export function useTypingTest() {
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
+  const getTimeLimit = useCallback((mode: TestMode): number => {
+    switch (mode) {
+      case '1min': return 60;
+      case '3min': return 180;
+      case '5min': return 300;
+      case 'words': return 999999; // No time limit for word mode
+      default: return 60;
+    }
+  }, []);
+
   const updateTimer = useCallback(() => {
     setState(prev => {
       if (!prev.isActive || prev.isCompleted || !prev.startTime) return prev;
@@ -73,7 +83,7 @@ export function useTypingTest() {
         accuracy,
       };
     });
-  }, []);
+  }, [getTimeLimit]);
 
   useEffect(() => {
     if (state.isActive && !state.isCompleted) {
@@ -90,16 +100,6 @@ export function useTypingTest() {
     };
   }, [state.isActive, state.isCompleted, updateTimer]);
 
-  const getTimeLimit = (mode: TestMode): number => {
-    switch (mode) {
-      case '1min': return 60;
-      case '3min': return 180;
-      case '5min': return 300;
-      case 'words': return 999999; // No time limit for word mode
-      default: return 60;
-    }
-  };
-
   const startTest = useCallback((textToType: string) => {
     setState(prev => ({
       ...prev,
@@ -115,7 +115,7 @@ export function useTypingTest() {
       wpm: 0,
       accuracy: 100,
     }));
-  }, []);
+  }, [getTimeLimit]);
 
   const handleKeyPress = useCallback((key: string) => {
     setState(prev => {
@@ -185,7 +185,7 @@ export function useTypingTest() {
       accuracy: 100,
       lastKeyPressed: '',
     }));
-  }, []);
+  }, [getTimeLimit]);
 
   const updateSettings = useCallback((updates: Partial<Pick<TypingTestState, 'mode' | 'difficulty' | 'language'>>) => {
     setState(prev => ({
@@ -193,7 +193,7 @@ export function useTypingTest() {
       ...updates,
       timeRemaining: updates.mode ? getTimeLimit(updates.mode) : prev.timeRemaining,
     }));
-  }, []);
+  }, [getTimeLimit]);
 
   return {
     state,
