@@ -18,9 +18,10 @@ function Router() {
 
   return (
     <Switch>
-      <Route path="/" component={isAuthenticated ? TypingTest : Landing} />
+      <Route path="/" component={TypingTest} />
+      <Route path="/landing" component={Landing} />
       <Route path="/test" component={TypingTest} />
-      {isAuthenticated && <Route path="/profile" component={Profile} />}
+      <Route path="/profile" component={isAuthenticated ? Profile : NotFound} />
       <Route component={NotFound} />
     </Switch>
   );

@@ -11,6 +11,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useQuery } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Link } from 'wouter';
+import { SignupModal } from '@/components/signup-modal';
 
 export default function TypingTest() {
   const { state, startTest, handleKeyPress, resetTest, updateSettings, extendText } = useTypingTest();
@@ -19,6 +20,8 @@ export default function TypingTest() {
   const [currentText, setCurrentText] = useState('');
   const resultSavedRef = useRef(false);
   const isExtendingText = useRef(false);
+  const [showSignupModal, setShowSignupModal] = useState(false);
+  const hasCompletedFirstTest = useRef(false);
 
   // Fetch text sample when settings change
   const { data: textData, refetch: refetchText } = useQuery({
@@ -32,26 +35,35 @@ export default function TypingTest() {
     }
   }, [textData]);
 
-  // Save result when test is completed (only once)
+  // Save result when test is completed (only once) and show signup modal for first test
   useEffect(() => {
     if (state.isCompleted && state.timeElapsed > 0 && !resultSavedRef.current) {
       resultSavedRef.current = true;
       
-      const wordsTyped = Math.floor(state.currentPosition / 5); // Standard calculation: 5 characters = 1 word
+      // Show signup modal for first test if user is not authenticated
+      if (!isAuthenticated && !hasCompletedFirstTest.current) {
+        hasCompletedFirstTest.current = true;
+        setShowSignupModal(true);
+      }
       
-      saveTestResult({
-        wpm: Math.round(state.wpm),
-        accuracy: Math.round(state.accuracy),
-        errors: state.errors,
-        mode: state.mode,
-        difficulty: state.difficulty,
-        language: state.language,
-        duration: state.timeElapsed,
-        charactersTyped: state.currentPosition,
-        wordsTyped,
-      });
+      // Save result only if authenticated
+      if (isAuthenticated) {
+        const wordsTyped = Math.floor(state.currentPosition / 5); // Standard calculation: 5 characters = 1 word
+        
+        saveTestResult({
+          wpm: Math.round(state.wpm),
+          accuracy: Math.round(state.accuracy),
+          errors: state.errors,
+          mode: state.mode,
+          difficulty: state.difficulty,
+          language: state.language,
+          duration: state.timeElapsed,
+          charactersTyped: state.currentPosition,
+          wordsTyped,
+        });
+      }
     }
-  }, [state.isCompleted, state.wpm, state.accuracy, state.errors, state.mode, state.difficulty, state.language, state.timeElapsed, state.currentPosition, saveTestResult]);
+  }, [state.isCompleted, state.wpm, state.accuracy, state.errors, state.mode, state.difficulty, state.language, state.timeElapsed, state.currentPosition, saveTestResult, isAuthenticated]);
 
   // Reset the result saved flag when test is reset
   useEffect(() => {
@@ -218,6 +230,14 @@ export default function TypingTest() {
           </div>
         </div>
       </footer>
+
+      {/* Signup Modal */}
+      <SignupModal
+        isOpen={showSignupModal}
+        onClose={() => setShowSignupModal(false)}
+        wpm={state.wpm}
+        accuracy={state.accuracy}
+      />
     </div>
   );
 }
