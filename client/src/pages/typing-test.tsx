@@ -60,16 +60,7 @@ export default function TypingTest() {
     }
   };
 
-  const handleKeyDown = (e: KeyboardEvent) => {
-    if (state.isActive && !state.isCompleted) {
-      handleKeyPress(e.key);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [state.isActive, state.isCompleted]);
+  // Removed global keydown handler to prevent double input
 
   return (
     <div className="min-h-screen bg-gray-50">
