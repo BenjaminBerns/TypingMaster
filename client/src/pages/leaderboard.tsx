@@ -99,10 +99,15 @@ export default function Leaderboard() {
   const [selectedCountry, setSelectedCountry] = useState<Country>('France');
   const [selectedTimeRange, setSelectedTimeRange] = useState<TimeRange>('all-time');
 
-  const { data: leaderboard, isLoading } = useQuery({
-    queryKey: ['/api/leaderboard', selectedRegion, selectedContinent, selectedCountry, selectedTimeRange],
+  const { data: leaderboard, isLoading, error } = useQuery({
+    queryKey: [`/api/leaderboard/${selectedRegion}/${selectedContinent}/${selectedCountry}/${selectedTimeRange}`],
     retry: false,
   });
+
+  // Debug logging
+  console.log('Leaderboard data:', leaderboard);
+  console.log('Is loading:', isLoading);
+  console.log('Error:', error);
 
   const getRankIcon = (rank: number) => {
     switch (rank) {
@@ -285,9 +290,9 @@ export default function Leaderboard() {
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
                   <p className="text-muted-foreground mt-2">Chargement du classement...</p>
                 </div>
-              ) : (
+              ) : leaderboard && Array.isArray(leaderboard) && leaderboard.length > 0 ? (
                 <div className="space-y-2">
-                  {(leaderboard as LeaderboardEntry[])?.map((entry) => (
+                  {(leaderboard as LeaderboardEntry[]).map((entry) => (
                     <TooltipProvider key={entry.userId}>
                       <Tooltip>
                         <TooltipTrigger asChild>
@@ -387,6 +392,14 @@ export default function Leaderboard() {
                       </Tooltip>
                     </TooltipProvider>
                   ))}
+                </div>
+              ) : (
+                <div className="text-center py-8">
+                  <Trophy className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                  <p className="text-gray-600 text-lg">Aucun utilisateur trouvé</p>
+                  <p className="text-gray-500 text-sm mt-2">
+                    Essayez de modifier les filtres ou revenez plus tard
+                  </p>
                 </div>
               )}
             </CardContent>

@@ -187,9 +187,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Leaderboard routes
-  app.get('/api/leaderboard', async (req, res) => {
+  app.get('/api/leaderboard/:region/:continent/:country/:timeRange', async (req, res) => {
     try {
-      const { region = 'world', continent = 'Europe', country = 'France', timeRange = 'all-time' } = req.query;
+      const { region = 'world', continent = 'Europe', country = 'France', timeRange = 'all-time' } = req.params;
       
       // Generate different data based on filters
       const getCountryList = (selectedRegion: string, selectedContinent: string, selectedCountry: string) => {
