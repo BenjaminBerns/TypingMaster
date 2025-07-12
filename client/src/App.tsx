@@ -12,24 +12,16 @@ import Profile from "@/pages/profile";
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
 
+  if (isLoading) {
+    return <div className="flex justify-center items-center min-h-screen">Chargement...</div>;
+  }
+
   return (
     <Switch>
-      {isLoading ? (
-        <Route path="/" component={() => <div className="flex justify-center items-center min-h-screen">Chargement...</div>} />
-      ) : isAuthenticated ? (
-        <>
-          <Route path="/" component={TypingTest} />
-          <Route path="/test" component={TypingTest} />
-          <Route path="/profile" component={Profile} />
-          <Route component={NotFound} />
-        </>
-      ) : (
-        <>
-          <Route path="/" component={Landing} />
-          <Route path="/test" component={TypingTest} />
-          <Route component={NotFound} />
-        </>
-      )}
+      <Route path="/" component={isAuthenticated ? TypingTest : Landing} />
+      <Route path="/test" component={TypingTest} />
+      {isAuthenticated && <Route path="/profile" component={Profile} />}
+      <Route component={NotFound} />
     </Switch>
   );
 }
