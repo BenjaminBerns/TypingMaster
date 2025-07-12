@@ -159,29 +159,24 @@ export function CustomTextsFeature() {
 }
 
 export function MultiplayerFeature() {
-  const { user, isAuthenticated } = useAuth();
-  const hasAccess = isAuthenticated && user?.isPremium;
-
   return (
     <PremiumFeature
       title="Mode Multijoueur"
       description="Défiez d'autres utilisateurs en temps réel et participez à des tournois."
       icon={<Users className="w-5 h-5" />}
-      isPremium={true}
-      isLocked={!hasAccess}
+      isPremium={false}
+      isLocked={false}
     >
-      {hasAccess ? (
-        <div className="space-y-3">
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-            <span className="text-sm text-gray-600">1,234 joueurs en ligne</span>
-          </div>
-          <Button variant="outline" className="w-full">
-            <Users className="w-4 h-4 mr-2" />
-            Rejoindre une partie
-          </Button>
+      <div className="space-y-3">
+        <div className="flex items-center gap-2">
+          <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+          <span className="text-sm text-gray-600">1,234 joueurs en ligne</span>
         </div>
-      ) : null}
+        <Button variant="outline" className="w-full">
+          <Users className="w-4 h-4 mr-2" />
+          Rejoindre une partie
+        </Button>
+      </div>
     </PremiumFeature>
   );
 }

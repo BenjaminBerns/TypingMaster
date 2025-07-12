@@ -10,8 +10,12 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes
 
+- **January 12, 2025**: Created global leaderboard system with region and time filters
+- **January 12, 2025**: Moved multiplayer mode to free tier - now available to all users
+- **January 12, 2025**: Added comprehensive ranking system with World/Continent/Country filters
+- **January 12, 2025**: Implemented time-based leaderboard filtering (Day/Week/Month/Year/All-time)
 - **January 12, 2025**: Implemented comprehensive premium features system with advanced database schema
-- **January 12, 2025**: Added premium subscription plans with custom texts, multiplayer, and advanced stats
+- **January 12, 2025**: Added premium subscription plans with custom texts and advanced stats
 - **January 12, 2025**: Created premium page with detailed pricing and feature comparison
 - **January 12, 2025**: Added premium banners and feature previews throughout the application
 - **January 12, 2025**: Added localStorage for non-authenticated users to save test results temporarily
@@ -88,12 +92,20 @@ The backend is a Node.js Express server with the following characteristics:
 5. **Premium Features System**
    - Advanced database schema for premium subscriptions
    - Custom texts with specialized categories (code, medical, juridical)
-   - Multiplayer rooms and real-time competitions
+   - Premium-only competitive features and tournaments
    - Advanced typing statistics with keystroke analysis
    - Theme customization and personalization options
    - Data export functionality (PDF, CSV, Excel)
    - Training programs with intelligent exercise generation
    - Premium-only features with access control
+
+6. **Global Leaderboard System**
+   - Real-time global rankings with filtering capabilities
+   - Region-based filtering (World, Continent, Country)
+   - Time-based filtering (Day, Week, Month, Year, All-time)
+   - User position tracking and performance comparison
+   - Premium and free tier leaderboard integration
+   - Responsive design for all screen sizes
 
 ## Data Flow
 

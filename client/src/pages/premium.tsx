@@ -46,13 +46,13 @@ const premiumFeatures = [
     ]
   },
   {
-    category: "🎮 Fonctionnalités sociales",
+    category: "🎮 Fonctionnalités sociales premium",
     icon: <Users className="w-5 h-5" />,
     features: [
-      "Mode multijoueur en temps réel",
-      "Compétitions contre d'autres utilisateurs",
       "Classements premium exclusifs",
-      "Tournois et défis communautaires"
+      "Tournois et défis communautaires",
+      "Salles privées personnalisées",
+      "Statistiques de compétition avancées"
     ]
   },
   {

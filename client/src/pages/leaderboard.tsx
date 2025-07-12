@@ -1,0 +1,292 @@
+import { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Separator } from '@/components/ui/separator';
+import { 
+  Trophy, 
+  Medal, 
+  Award, 
+  Crown, 
+  Globe, 
+  Calendar,
+  Target,
+  Zap,
+  User,
+  MapPin,
+  Clock
+} from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
+import { Link } from 'wouter';
+
+type Region = 'world' | 'continent' | 'country';
+type TimeRange = 'all-time' | 'year' | 'month' | 'week' | 'day';
+
+interface LeaderboardEntry {
+  rank: number;
+  userId: string;
+  username: string;
+  wpm: number;
+  accuracy: number;
+  tests: number;
+  country?: string;
+  continent?: string;
+  isPremium?: boolean;
+  profileImage?: string;
+}
+
+const regions = [
+  { value: 'world', label: 'Monde', icon: <Globe className="w-4 h-4" /> },
+  { value: 'continent', label: 'Continent', icon: <MapPin className="w-4 h-4" /> },
+  { value: 'country', label: 'Pays', icon: <MapPin className="w-4 h-4" /> }
+];
+
+const timeRanges = [
+  { value: 'all-time', label: 'Depuis toujours', icon: <Clock className="w-4 h-4" /> },
+  { value: 'year', label: 'Cette année', icon: <Calendar className="w-4 h-4" /> },
+  { value: 'month', label: 'Ce mois', icon: <Calendar className="w-4 h-4" /> },
+  { value: 'week', label: 'Cette semaine', icon: <Calendar className="w-4 h-4" /> },
+  { value: 'day', label: 'Aujourd\'hui', icon: <Calendar className="w-4 h-4" /> }
+];
+
+export default function Leaderboard() {
+  const { user, isAuthenticated } = useAuth();
+  const [selectedRegion, setSelectedRegion] = useState<Region>('world');
+  const [selectedTimeRange, setSelectedTimeRange] = useState<TimeRange>('all-time');
+
+  const { data: leaderboard, isLoading } = useQuery({
+    queryKey: ['/api/leaderboard', selectedRegion, selectedTimeRange],
+    retry: false,
+  });
+
+  const getRankIcon = (rank: number) => {
+    switch (rank) {
+      case 1:
+        return <Trophy className="w-6 h-6 text-yellow-500" />;
+      case 2:
+        return <Medal className="w-6 h-6 text-gray-400" />;
+      case 3:
+        return <Award className="w-6 h-6 text-orange-500" />;
+      default:
+        return <span className="w-6 h-6 flex items-center justify-center text-sm font-bold text-gray-500">#{rank}</span>;
+    }
+  };
+
+  const getRegionLabel = (region: Region) => {
+    return regions.find(r => r.value === region)?.label || 'Monde';
+  };
+
+  const getTimeRangeLabel = (timeRange: TimeRange) => {
+    return timeRanges.find(t => t.value === timeRange)?.label || 'Depuis toujours';
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-4xl mx-auto">
+          {/* Header */}
+          <Card className="mb-8 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle className="text-3xl font-bold flex items-center gap-3">
+                    <Trophy className="w-8 h-8 text-yellow-300" />
+                    Classement Global
+                  </CardTitle>
+                  <p className="text-blue-100 mt-2">
+                    Découvrez les meilleurs dactylos de la communauté
+                  </p>
+                </div>
+                <div className="hidden md:flex items-center gap-2">
+                  <Target className="w-6 h-6 text-yellow-300" />
+                  <span className="text-sm text-blue-100">
+                    {getRegionLabel(selectedRegion)} • {getTimeRangeLabel(selectedTimeRange)}
+                  </span>
+                </div>
+              </div>
+            </CardHeader>
+          </Card>
+
+          {/* Filters */}
+          <Card className="mb-6">
+            <CardHeader>
+              <CardTitle className="text-lg flex items-center gap-2">
+                <Zap className="w-5 h-5" />
+                Filtres
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium mb-2">Région</label>
+                  <Select value={selectedRegion} onValueChange={(value: Region) => setSelectedRegion(value)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Sélectionnez une région" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {regions.map((region) => (
+                        <SelectItem key={region.value} value={region.value}>
+                          <div className="flex items-center gap-2">
+                            {region.icon}
+                            {region.label}
+                          </div>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2">Période</label>
+                  <Select value={selectedTimeRange} onValueChange={(value: TimeRange) => setSelectedTimeRange(value)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Sélectionnez une période" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {timeRanges.map((timeRange) => (
+                        <SelectItem key={timeRange.value} value={timeRange.value}>
+                          <div className="flex items-center gap-2">
+                            {timeRange.icon}
+                            {timeRange.label}
+                          </div>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Current User Position */}
+          {isAuthenticated && user && (
+            <Card className="mb-6 border-2 border-blue-200 bg-blue-50">
+              <CardHeader>
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <User className="w-5 h-5" />
+                  Votre Position
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center">
+                      <span className="text-white font-bold">#42</span>
+                    </div>
+                    <div>
+                      <p className="font-medium">{user.firstName || user.email}</p>
+                      <p className="text-sm text-muted-foreground">85 WPM • 96% de précision</p>
+                    </div>
+                  </div>
+                  <Button variant="outline" size="sm">
+                    <Target className="w-4 h-4 mr-2" />
+                    Améliorer
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Leaderboard */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Trophy className="w-5 h-5" />
+                Top 100 - {getRegionLabel(selectedRegion)} ({getTimeRangeLabel(selectedTimeRange)})
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {isLoading ? (
+                <div className="text-center py-8">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+                  <p className="text-muted-foreground mt-2">Chargement du classement...</p>
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  {/* Mock data for demonstration */}
+                  {Array.from({ length: 20 }, (_, i) => {
+                    const rank = i + 1;
+                    const wpm = Math.floor(Math.random() * 50) + 80;
+                    const accuracy = Math.floor(Math.random() * 10) + 90;
+                    const tests = Math.floor(Math.random() * 500) + 50;
+                    const isPremium = Math.random() > 0.7;
+                    
+                    return (
+                      <div key={i} className={`
+                        flex items-center justify-between p-4 rounded-lg border transition-colors
+                        ${rank <= 3 ? 'bg-gradient-to-r from-yellow-50 to-orange-50 border-yellow-200' : 'bg-white border-gray-200'}
+                        hover:bg-gray-50
+                      `}>
+                        <div className="flex items-center gap-4">
+                          <div className="flex items-center justify-center w-8">
+                            {getRankIcon(rank)}
+                          </div>
+                          <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center">
+                            <span className="text-white font-bold text-sm">
+                              {String.fromCharCode(65 + (i % 26))}
+                            </span>
+                          </div>
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <span className="font-medium">Utilisateur {rank}</span>
+                              {isPremium && (
+                                <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white text-xs">
+                                  <Crown className="w-3 h-3 mr-1" />
+                                  Premium
+                                </Badge>
+                              )}
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                              {tests} tests • France
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-6">
+                          <div className="text-right">
+                            <div className="font-bold text-lg">{wpm}</div>
+                            <div className="text-xs text-muted-foreground">WPM</div>
+                          </div>
+                          <div className="text-right">
+                            <div className="font-bold text-lg">{accuracy}%</div>
+                            <div className="text-xs text-muted-foreground">Précision</div>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Call to Action */}
+          <Card className="mt-6 bg-gradient-to-r from-green-500 to-blue-500 text-white">
+            <CardContent className="pt-6">
+              <div className="text-center">
+                <h3 className="text-xl font-bold mb-2">Rejoignez la compétition !</h3>
+                <p className="text-green-100 mb-4">
+                  Améliorez votre vitesse de frappe et grimpez dans le classement
+                </p>
+                <div className="flex gap-4 justify-center">
+                  <Link to="/">
+                    <Button className="bg-white text-green-600 hover:bg-gray-100">
+                      <Target className="w-4 h-4 mr-2" />
+                      Commencer un test
+                    </Button>
+                  </Link>
+                  <Link to="/premium">
+                    <Button variant="outline" className="border-white text-white hover:bg-white hover:text-green-600">
+                      <Crown className="w-4 h-4 mr-2" />
+                      Devenir Premium
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+}

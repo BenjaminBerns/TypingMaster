@@ -9,6 +9,7 @@ import TypingTest from "@/pages/typing-test";
 import Landing from "@/pages/landing";
 import Profile from "@/pages/profile";
 import Premium from "@/pages/premium";
+import Leaderboard from "@/pages/leaderboard";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -24,6 +25,7 @@ function Router() {
       <Route path="/test" component={TypingTest} />
       <Route path="/profile" component={isAuthenticated ? Profile : NotFound} />
       <Route path="/premium" component={Premium} />
+      <Route path="/leaderboard" component={Leaderboard} />
       <Route component={NotFound} />
     </Switch>
   );

@@ -14,7 +14,7 @@ import { Button } from '@/components/ui/button';
 import { Link } from 'wouter';
 import { SignupModal } from '@/components/signup-modal';
 import { PremiumBanner } from '@/components/premium-banner';
-import { Crown } from 'lucide-react';
+import { Crown, Trophy } from 'lucide-react';
 
 export default function TypingTest() {
   const { state, startTest, handleKeyPress, resetTest, updateSettings, extendText } = useTypingTest();
@@ -145,6 +145,12 @@ export default function TypingTest() {
                 <History className="w-4 h-4 mr-2 inline" />
                 Historique
               </a>
+              <Link href="/leaderboard">
+                <Button variant="ghost" size="sm" className="text-gray-600 hover:text-blue-500">
+                  <Trophy className="w-4 h-4 mr-2" />
+                  Classement
+                </Button>
+              </Link>
               {isAuthenticated ? (
                 <div className="flex items-center space-x-4">
                   <Link href="/profile">

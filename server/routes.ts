@@ -186,6 +186,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Leaderboard routes
+  app.get('/api/leaderboard', async (req, res) => {
+    try {
+      const { region = 'world', timeRange = 'all-time' } = req.query;
+      
+      // Mock leaderboard data for demonstration
+      const mockData = Array.from({ length: 20 }, (_, i) => ({
+        rank: i + 1,
+        userId: `user-${i + 1}`,
+        username: `Utilisateur ${i + 1}`,
+        wpm: Math.floor(Math.random() * 50) + 80,
+        accuracy: Math.floor(Math.random() * 10) + 90,
+        tests: Math.floor(Math.random() * 500) + 50,
+        country: 'France',
+        continent: 'Europe',
+        isPremium: Math.random() > 0.7,
+        profileImage: null
+      }));
+      
+      res.json(mockData);
+    } catch (error) {
+      console.error('Error fetching leaderboard:', error);
+      res.status(500).json({ message: 'Failed to fetch leaderboard' });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }
