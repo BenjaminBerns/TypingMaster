@@ -25,7 +25,7 @@ import { Link } from 'wouter';
 
 type Region = 'world' | 'continent' | 'country';
 type Continent = 'Europe' | 'Amérique du Nord' | 'Amérique du Sud' | 'Asie' | 'Afrique' | 'Océanie';
-type Country = 'France' | 'Canada' | 'Belgique' | 'Suisse' | 'États-Unis' | 'Royaume-Uni' | 'Allemagne' | 'Espagne' | 'Italie' | 'Brésil';
+type Country = 'France' | 'Canada' | 'Belgique' | 'Suisse' | 'États-Unis' | 'Royaume-Uni' | 'Allemagne' | 'Espagne' | 'Italie' | 'Portugal' | 'Pays-Bas' | 'Autriche' | 'Brésil' | 'Argentine' | 'Chili' | 'Japon' | 'Corée du Sud' | 'Chine' | 'Inde' | 'Australie' | 'Nouvelle-Zélande';
 type TimeRange = 'all-time' | 'year' | 'month' | 'week' | 'day';
 
 interface LeaderboardEntry {
@@ -70,7 +70,18 @@ const countries = [
   { value: 'Allemagne', label: 'Allemagne' },
   { value: 'Espagne', label: 'Espagne' },
   { value: 'Italie', label: 'Italie' },
-  { value: 'Brésil', label: 'Brésil' }
+  { value: 'Portugal', label: 'Portugal' },
+  { value: 'Pays-Bas', label: 'Pays-Bas' },
+  { value: 'Autriche', label: 'Autriche' },
+  { value: 'Brésil', label: 'Brésil' },
+  { value: 'Argentine', label: 'Argentine' },
+  { value: 'Chili', label: 'Chili' },
+  { value: 'Japon', label: 'Japon' },
+  { value: 'Corée du Sud', label: 'Corée du Sud' },
+  { value: 'Chine', label: 'Chine' },
+  { value: 'Inde', label: 'Inde' },
+  { value: 'Australie', label: 'Australie' },
+  { value: 'Nouvelle-Zélande', label: 'Nouvelle-Zélande' }
 ];
 
 const timeRanges = [

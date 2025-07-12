@@ -10,6 +10,9 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes
 
+- **January 12, 2025**: Fixed leaderboard filtering system with comprehensive test data (100 users from 30+ countries)
+- **January 12, 2025**: Added dynamic region-specific filtering (World/Continent/Country selection)
+- **January 12, 2025**: Implemented realistic user profiles with country-specific names and performance data
 - **January 12, 2025**: Created global leaderboard system with region and time filters
 - **January 12, 2025**: Moved multiplayer mode to free tier - now available to all users
 - **January 12, 2025**: Added comprehensive ranking system with World/Continent/Country filters

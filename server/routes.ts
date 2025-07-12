@@ -212,43 +212,83 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       const availableCountries = getCountryList(region as string, continent as string, country as string);
       
-      // Mock leaderboard data for demonstration - sorted by WPM
-      const mockData = Array.from({ length: 20 }, (_, i) => {
-        const randomCountry = availableCountries[Math.floor(Math.random() * availableCountries.length)];
-        const getContinentFromCountry = (country: string) => {
-          const continentMap: Record<string, string> = {
-            'France': 'Europe', 'Belgique': 'Europe', 'Suisse': 'Europe', 'Royaume-Uni': 'Europe', 
-            'Allemagne': 'Europe', 'Espagne': 'Europe', 'Italie': 'Europe',
-            'Canada': 'Amérique du Nord', 'États-Unis': 'Amérique du Nord',
-            'Brésil': 'Amérique du Sud',
-            'Japon': 'Asie', 'Corée du Sud': 'Asie', 'Chine': 'Asie',
-            'Maroc': 'Afrique', 'Tunisie': 'Afrique', 'Algérie': 'Afrique',
-            'Australie': 'Océanie', 'Nouvelle-Zélande': 'Océanie'
-          };
-          return continentMap[country] || 'Europe';
+      // Generate comprehensive test data with 100 users from different regions
+      const allCountries = [
+        'France', 'Belgique', 'Suisse', 'Royaume-Uni', 'Allemagne', 'Espagne', 'Italie', 'Portugal', 'Pays-Bas', 'Autriche',
+        'Canada', 'États-Unis', 'Mexique',
+        'Brésil', 'Argentine', 'Chili', 'Colombie',
+        'Japon', 'Corée du Sud', 'Chine', 'Inde', 'Thaïlande', 'Singapour',
+        'Maroc', 'Tunisie', 'Algérie', 'Égypte', 'Afrique du Sud',
+        'Australie', 'Nouvelle-Zélande'
+      ];
+
+      const getContinentFromCountry = (country: string) => {
+        const continentMap: Record<string, string> = {
+          'France': 'Europe', 'Belgique': 'Europe', 'Suisse': 'Europe', 'Royaume-Uni': 'Europe', 
+          'Allemagne': 'Europe', 'Espagne': 'Europe', 'Italie': 'Europe', 'Portugal': 'Europe', 
+          'Pays-Bas': 'Europe', 'Autriche': 'Europe',
+          'Canada': 'Amérique du Nord', 'États-Unis': 'Amérique du Nord', 'Mexique': 'Amérique du Nord',
+          'Brésil': 'Amérique du Sud', 'Argentine': 'Amérique du Sud', 'Chili': 'Amérique du Sud', 'Colombie': 'Amérique du Sud',
+          'Japon': 'Asie', 'Corée du Sud': 'Asie', 'Chine': 'Asie', 'Inde': 'Asie', 'Thaïlande': 'Asie', 'Singapour': 'Asie',
+          'Maroc': 'Afrique', 'Tunisie': 'Afrique', 'Algérie': 'Afrique', 'Égypte': 'Afrique', 'Afrique du Sud': 'Afrique',
+          'Australie': 'Océanie', 'Nouvelle-Zélande': 'Océanie'
         };
+        return continentMap[country] || 'Europe';
+      };
+
+      const getRandomName = (country: string) => {
+        const namesByCountry: Record<string, string[]> = {
+          'France': ['Pierre', 'Marie', 'Jean', 'Sophie', 'Lucas', 'Emma', 'Thomas', 'Léa', 'Nicolas', 'Camille'],
+          'Belgique': ['Maxime', 'Julie', 'Antoine', 'Sarah', 'Simon', 'Laura', 'David', 'Amélie', 'Kevin', 'Emilie'],
+          'Canada': ['Alexandre', 'Catherine', 'Mathieu', 'Isabelle', 'Gabriel', 'Nathalie', 'Samuel', 'Mélanie', 'Olivier', 'Valérie'],
+          'États-Unis': ['Michael', 'Jennifer', 'Christopher', 'Jessica', 'Matthew', 'Ashley', 'Joshua', 'Amanda', 'Andrew', 'Sarah'],
+          'Japon': ['Hiroshi', 'Yuki', 'Takeshi', 'Akiko', 'Kenji', 'Sakura', 'Daisuke', 'Emiko', 'Taro', 'Hanako'],
+          'Allemagne': ['Müller', 'Schmidt', 'Schneider', 'Fischer', 'Weber', 'Meyer', 'Wagner', 'Becker', 'Schulz', 'Hoffmann'],
+          'Espagne': ['García', 'Rodríguez', 'González', 'Fernández', 'López', 'Martínez', 'Sánchez', 'Pérez', 'Gómez', 'Martín'],
+          'Brésil': ['Silva', 'Santos', 'Oliveira', 'Souza', 'Rodrigues', 'Ferreira', 'Alves', 'Pereira', 'Lima', 'Gomes']
+        };
+        const names = namesByCountry[country] || ['Utilisateur'];
+        return names[Math.floor(Math.random() * names.length)];
+      };
+
+      // Create 100 test users
+      const allMockData = Array.from({ length: 100 }, (_, i) => {
+        const randomCountry = allCountries[Math.floor(Math.random() * allCountries.length)];
+        const wpm = Math.floor(Math.random() * 80) + 40; // WPM between 40-120
+        const accuracy = Math.floor(Math.random() * 20) + 80; // Accuracy between 80-100%
         
         return {
           userId: `user-${i + 1}`,
-          username: `Utilisateur ${i + 1}`,
-          wpm: Math.floor(Math.random() * 50) + 80,
-          accuracy: Math.floor(Math.random() * 10) + 90,
-          tests: Math.floor(Math.random() * 500) + 50,
+          username: `${getRandomName(randomCountry)}${i + 1}`,
+          wpm: wpm,
+          accuracy: accuracy,
+          tests: Math.floor(Math.random() * 800) + 20,
           country: randomCountry,
           continent: getContinentFromCountry(randomCountry),
-          isPremium: Math.random() > 0.7,
+          isPremium: Math.random() > 0.8,
           profileImage: null,
-          averageWpm: Math.floor(Math.random() * 40) + 70,
-          bestWpm: Math.floor(Math.random() * 60) + 90,
-          totalWords: Math.floor(Math.random() * 50000) + 10000,
-          joinDate: new Date(Date.now() - Math.random() * 365 * 24 * 60 * 60 * 1000).toISOString()
+          averageWpm: Math.max(30, wpm - Math.floor(Math.random() * 15)),
+          bestWpm: wpm + Math.floor(Math.random() * 25),
+          totalWords: Math.floor(Math.random() * 100000) + 5000,
+          joinDate: new Date(Date.now() - Math.random() * 730 * 24 * 60 * 60 * 1000).toISOString()
         };
-      })
-      .sort((a, b) => b.wpm - a.wpm) // Sort by WPM descending
-      .map((user, index) => ({
-        ...user,
-        rank: index + 1 // Assign rank based on sorted position
-      }));
+      });
+
+      // Filter data based on region selection
+      const filteredData = allMockData.filter(user => {
+        if (region === 'world') return true;
+        if (region === 'continent') return user.continent === continent;
+        if (region === 'country') return user.country === country;
+        return true;
+      });
+
+      const mockData = filteredData
+        .sort((a, b) => b.wpm - a.wpm) // Sort by WPM descending
+        .map((user, index) => ({
+          ...user,
+          rank: index + 1 // Assign rank based on sorted position
+        }))
+        .slice(0, 50); // Show top 50 users
       
       res.json(mockData);
     } catch (error) {
