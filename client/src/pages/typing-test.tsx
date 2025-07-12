@@ -13,6 +13,8 @@ import { useQuery } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Link } from 'wouter';
 import { SignupModal } from '@/components/signup-modal';
+import { PremiumBanner } from '@/components/premium-banner';
+import { Crown } from 'lucide-react';
 
 export default function TypingTest() {
   const { state, startTest, handleKeyPress, resetTest, updateSettings, extendText } = useTypingTest();
@@ -151,6 +153,12 @@ export default function TypingTest() {
                       Profil
                     </Button>
                   </Link>
+                  <Link href="/premium">
+                    <Button variant="ghost" size="sm" className="text-yellow-600 hover:text-yellow-700 hover:bg-yellow-50">
+                      <Crown className="w-4 h-4 mr-2" />
+                      Premium
+                    </Button>
+                  </Link>
                   <Button 
                     variant="ghost" 
                     size="sm"
@@ -177,6 +185,13 @@ export default function TypingTest() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Premium Banner */}
+        {(!isAuthenticated || !user?.isPremium) && (
+          <div className="mb-8">
+            <PremiumBanner context="typing-test" />
+          </div>
+        )}
+        
         {/* Test Configuration */}
         <div className="mb-8">
           <TestConfig

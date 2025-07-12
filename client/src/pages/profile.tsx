@@ -4,9 +4,17 @@ import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { User, Clock, Target, Zap, TrendingUp } from "lucide-react";
+import { User, Clock, Target, Zap, TrendingUp, Crown } from "lucide-react";
 import { useEffect } from "react";
 import { isUnauthorizedError } from "@/lib/authUtils";
+import { PremiumBanner } from '@/components/premium-banner';
+import { 
+  AdvancedStatsFeature, 
+  CustomTextsFeature, 
+  MultiplayerFeature, 
+  ThemeCustomizationFeature, 
+  DataExportFeature 
+} from '@/components/premium-features';
 
 export default function Profile() {
   const { toast } = useToast();
@@ -206,6 +214,20 @@ export default function Profile() {
           )}
         </CardContent>
       </Card>
+
+      {/* Premium Features */}
+      <div className="mt-8 space-y-6">
+        <h2 className="text-xl font-semibold text-gray-900">
+          Fonctionnalités Premium
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <AdvancedStatsFeature />
+          <CustomTextsFeature />
+          <MultiplayerFeature />
+          <ThemeCustomizationFeature />
+          <DataExportFeature />
+        </div>
+      </div>
     </div>
   );
 }
