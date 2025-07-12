@@ -10,13 +10,13 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes
 
+- **January 12, 2025**: Added localStorage for non-authenticated users to save test results temporarily
+- **January 12, 2025**: Enhanced signup modal with Google/Apple authentication options  
 - **January 12, 2025**: Modified user experience flow - direct access to typing test for all users
 - **January 12, 2025**: Added signup modal that appears after first test completion for unauthenticated users
 - **January 12, 2025**: Implemented infinite text mode for time-based tests (1min, 3min, 5min)
 - **January 12, 2025**: Fixed duplicate result saving issues - now saves only once per test
 - **January 12, 2025**: Added user profile page with personal statistics and test history
-- **January 12, 2025**: Created landing page for unauthenticated users with authentication flow
-- **January 12, 2025**: Enhanced text generation system for continuous typing during timed tests
 - **January 12, 2025**: PostgreSQL database with user authentication via Replit Auth
 
 ## System Architecture
@@ -56,6 +56,7 @@ The backend is a Node.js Express server with the following characteristics:
 
 2. **Performance Tracking**
    - Database storage for authenticated user results
+   - localStorage for non-authenticated users (temporary storage)
    - Personal statistics and performance history
    - User profile with detailed analytics
    - Real-time performance dashboard
@@ -69,6 +70,7 @@ The backend is a Node.js Express server with the following characteristics:
    - Authentication-aware navigation and features
    - Direct access to typing test for all users
    - Signup modal after first test completion for unauthenticated users
+   - Multiple authentication options (Replit, Google, Apple)
 
 4. **Text Management**
    - Predefined text samples for different difficulties

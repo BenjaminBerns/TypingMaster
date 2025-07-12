@@ -3,11 +3,19 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Download, Trophy, Medal, Star } from 'lucide-react';
 import { usePerformanceHistory } from '@/hooks/use-performance-history';
+import { useAuth } from '@/hooks/useAuth';
+import { useLocalHistory } from '@/hooks/use-local-history';
 
 export function PerformanceHistory() {
+  const { isAuthenticated } = useAuth();
   const { history, getStats, getRecentResults, clearHistory } = usePerformanceHistory();
-  const stats = getStats();
-  const recentResults = getRecentResults(5);
+  const { localHistory, getLocalStats, clearLocalHistory } = useLocalHistory();
+  
+  // Use local data if not authenticated, otherwise use database data
+  const currentHistory = isAuthenticated ? history : localHistory;
+  const stats = isAuthenticated ? getStats() : getLocalStats();
+  const recentResults = isAuthenticated ? getRecentResults(5) : localHistory.slice(0, 5);
+  const handleClearHistory = isAuthenticated ? clearHistory : clearLocalHistory;
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
@@ -39,8 +47,12 @@ export function PerformanceHistory() {
     });
   };
 
+  const getDateFromResult = (result: any) => {
+    return result.completedAt || result.createdAt || new Date().toISOString();
+  };
+
   const exportData = () => {
-    const dataStr = JSON.stringify(history, null, 2);
+    const dataStr = JSON.stringify(currentHistory, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
     const exportFileDefaultName = 'typing-history.json';
     
@@ -60,7 +72,7 @@ export function PerformanceHistory() {
               variant="outline" 
               size="sm" 
               onClick={exportData}
-              disabled={history.length === 0}
+              disabled={currentHistory.length === 0}
             >
               <Download className="w-4 h-4 mr-1" />
               Exporter
@@ -68,15 +80,15 @@ export function PerformanceHistory() {
             <Button 
               variant="outline" 
               size="sm" 
-              onClick={clearHistory}
-              disabled={history.length === 0}
+              onClick={handleClearHistory}
+              disabled={currentHistory.length === 0}
             >
               Effacer
             </Button>
           </div>
         </div>
 
-        {history.length === 0 ? (
+        {currentHistory.length === 0 ? (
           <div className="text-center text-gray-500 py-8">
             <p>Aucun test effectué pour le moment.</p>
             <p className="text-sm mt-2">Commencez votre premier test pour voir vos statistiques !</p>
@@ -115,7 +127,7 @@ export function PerformanceHistory() {
                 <tbody className="divide-y divide-gray-200">
                   {recentResults.map((result, index) => (
                     <tr key={index} className="hover:bg-gray-50">
-                      <td className="px-4 py-3">{formatDate(result.date)}</td>
+                      <td className="px-4 py-3">{formatDate(getDateFromResult(result))}</td>
                       <td className="px-4 py-3">
                         <Badge variant="outline" className={getModeColor(result.mode)}>
                           {result.mode}

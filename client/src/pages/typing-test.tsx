@@ -8,6 +8,7 @@ import { PerformanceHistory } from '@/components/performance-history';
 import { useTypingTest } from '@/hooks/use-typing-test';
 import { useTestResults } from '@/hooks/use-test-results';
 import { useAuth } from '@/hooks/useAuth';
+import { useLocalHistory } from '@/hooks/use-local-history';
 import { useQuery } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Link } from 'wouter';
@@ -17,6 +18,7 @@ export default function TypingTest() {
   const { state, startTest, handleKeyPress, resetTest, updateSettings, extendText } = useTypingTest();
   const { saveTestResult, isSaving } = useTestResults();
   const { user, isAuthenticated } = useAuth();
+  const { saveLocalResult } = useLocalHistory();
   const [currentText, setCurrentText] = useState('');
   const resultSavedRef = useRef(false);
   const isExtendingText = useRef(false);
@@ -46,24 +48,27 @@ export default function TypingTest() {
         setShowSignupModal(true);
       }
       
-      // Save result only if authenticated
+      const wordsTyped = Math.floor(state.currentPosition / 5); // Standard calculation: 5 characters = 1 word
+      const resultData = {
+        wpm: Math.round(state.wpm),
+        accuracy: Math.round(state.accuracy),
+        errors: state.errors,
+        mode: state.mode,
+        difficulty: state.difficulty,
+        language: state.language,
+        duration: state.timeElapsed,
+        charactersTyped: state.currentPosition,
+        wordsTyped,
+      };
+
+      // Save result to database if authenticated, otherwise to localStorage
       if (isAuthenticated) {
-        const wordsTyped = Math.floor(state.currentPosition / 5); // Standard calculation: 5 characters = 1 word
-        
-        saveTestResult({
-          wpm: Math.round(state.wpm),
-          accuracy: Math.round(state.accuracy),
-          errors: state.errors,
-          mode: state.mode,
-          difficulty: state.difficulty,
-          language: state.language,
-          duration: state.timeElapsed,
-          charactersTyped: state.currentPosition,
-          wordsTyped,
-        });
+        saveTestResult(resultData);
+      } else {
+        saveLocalResult(resultData);
       }
     }
-  }, [state.isCompleted, state.wpm, state.accuracy, state.errors, state.mode, state.difficulty, state.language, state.timeElapsed, state.currentPosition, saveTestResult, isAuthenticated]);
+  }, [state.isCompleted, state.wpm, state.accuracy, state.errors, state.mode, state.difficulty, state.language, state.timeElapsed, state.currentPosition, saveTestResult, isAuthenticated, saveLocalResult]);
 
   // Reset the result saved flag when test is reset
   useEffect(() => {
