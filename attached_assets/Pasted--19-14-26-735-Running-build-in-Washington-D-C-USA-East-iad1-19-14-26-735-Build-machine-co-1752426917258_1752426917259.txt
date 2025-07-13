@@ -1,0 +1,32 @@
+[19:14:26.735] Running build in Washington, D.C., USA (East) – iad1
+[19:14:26.735] Build machine configuration: 2 cores, 8 GB
+[19:14:26.763] Cloning github.com/BenjaminBerns/typing-master (Branch: main, Commit: b55941a)
+[19:14:26.915] Previous build caches not available
+[19:14:27.052] Cloning completed: 289.000ms
+[19:14:27.349] Running "vercel build"
+[19:14:27.789] Vercel CLI 44.3.0
+[19:14:28.415] > Installing Builder: @vercel/node@3.0.0
+[19:14:38.098] Installing dependencies...
+[19:14:42.308] npm warn deprecated @esbuild-kit/core-utils@3.3.2: Merged into tsx: https://tsx.is
+[19:14:42.321] npm warn deprecated @esbuild-kit/esm-loader@2.6.5: Merged into tsx: https://tsx.is
+[19:14:47.216] 
+[19:14:47.217] added 499 packages in 9s
+[19:14:47.217] 
+[19:14:47.217] 67 packages are looking for funding
+[19:14:47.218]   run `npm fund` for details
+[19:14:47.535] [36mvite v5.4.19 [32mbuilding for production...[36m[39m
+[19:14:47.583] transforming...
+[19:14:47.828] Browserslist: browsers data (caniuse-lite) is 9 months old. Please run:
+[19:14:47.829]   npx update-browserslist-db@latest
+[19:14:47.830]   Why you should do it regularly: https://github.com/browserslist/update-db#readme
+[19:14:51.798] [32m✓[39m 1737 modules transformed.
+[19:14:52.083] rendering chunks...
+[19:14:52.093] computing gzip size...
+[19:14:52.110] [2mpublic/[22m[32mindex.html                 [39m[1m[2m  0.63 kB[22m[1m[22m[2m │ gzip:   0.38 kB[22m
+[19:14:52.110] [2mpublic/[22m[2massets/[22m[35mindex-EIp5ikoj.css  [39m[1m[2m 73.79 kB[22m[1m[22m[2m │ gzip:  12.61 kB[22m
+[19:14:52.111] [2mpublic/[22m[2massets/[22m[36mindex-at6fjZ2y.js   [39m[1m[2m418.96 kB[22m[1m[22m[2m │ gzip: 126.44 kB[22m
+[19:14:52.111] [32m✓ built in 4.55s[39m
+[19:14:52.145] Error: No Output Directory named "public" found after the Build completed. You can configure the Output Directory in your Project Settings.
+[19:14:52.145] Learn More: https://vercel.link/missing-public-directory
+[19:14:52.412] 
+[19:14:54.928] Exiting build container
