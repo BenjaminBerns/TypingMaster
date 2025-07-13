@@ -133,70 +133,7 @@ export default function TypingTest() {
   // Removed global keydown handler to prevent double input
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-3">
-              <Keyboard className="text-2xl text-blue-500" />
-              <h1 className="text-xl font-bold text-gray-900">TypingMaster</h1>
-            </div>
-            <nav className="hidden md:flex items-center space-x-6">
-              <a href="#stats" className="text-gray-600 hover:text-blue-500 transition-colors">
-                <BarChart3 className="w-4 h-4 mr-2 inline" />
-                Statistiques
-              </a>
-              <a href="#history" className="text-gray-600 hover:text-blue-500 transition-colors">
-                <History className="w-4 h-4 mr-2 inline" />
-                Historique
-              </a>
-              <Link href="/leaderboard">
-                <Button variant="ghost" size="sm" className="text-gray-600 hover:text-blue-500">
-                  <Trophy className="w-4 h-4 mr-2" />
-                  Classement
-                </Button>
-              </Link>
-              {isAuthenticated ? (
-                <div className="flex items-center space-x-4">
-                  <Link href="/profile">
-                    <Button variant="ghost" size="sm">
-                      <User className="w-4 h-4 mr-2" />
-                      Profil
-                    </Button>
-                  </Link>
-                  <Link href="/premium">
-                    <Button variant="ghost" size="sm" className="text-yellow-600 hover:text-yellow-700 hover:bg-yellow-50">
-                      <Crown className="w-4 h-4 mr-2" />
-                      Premium
-                    </Button>
-                  </Link>
-                  <Button 
-                    variant="ghost" 
-                    size="sm"
-                    onClick={() => window.location.href = "/api/logout"}
-                  >
-                    <LogOut className="w-4 h-4 mr-2" />
-                    Déconnexion
-                  </Button>
-                </div>
-              ) : (
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                  onClick={() => window.location.href = "/api/login"}
-                >
-                  <User className="w-4 h-4 mr-2" />
-                  Se connecter
-                </Button>
-              )}
-            </nav>
-          </div>
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Premium Banner */}
         {(!isAuthenticated || !user?.isPremium) && (
           <div className="mb-8">
@@ -254,24 +191,23 @@ export default function TypingTest() {
         <div className="mb-8" id="history">
           <PerformanceHistory />
         </div>
-      </main>
 
-      {/* Footer */}
-      <footer className="bg-white border-t border-gray-200 mt-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="text-center text-gray-600">
-            <p>&copy; 2024 TypingMaster. Développé pour améliorer vos compétences de frappe.</p>
+        {/* Footer */}
+        <footer className="bg-white border-t border-gray-200 mt-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div className="text-center text-gray-600">
+              <p>&copy; 2024 TypingMaster. Développé pour améliorer vos compétences de frappe.</p>
+            </div>
           </div>
-        </div>
-      </footer>
+        </footer>
 
-      {/* Signup Modal */}
-      <SignupModal
-        isOpen={showSignupModal}
-        onClose={() => setShowSignupModal(false)}
-        wpm={state.wpm}
-        accuracy={state.accuracy}
-      />
-    </div>
+        {/* Signup Modal */}
+        <SignupModal
+          isOpen={showSignupModal}
+          onClose={() => setShowSignupModal(false)}
+          wpm={state.wpm}
+          accuracy={state.accuracy}
+        />
+      </div>
   );
 }
