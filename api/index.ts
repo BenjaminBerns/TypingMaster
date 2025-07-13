@@ -21,6 +21,11 @@ app.use((req, res, next) => {
   }
 });
 
+// Health check route
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
 // Register all routes
 registerRoutes(app).then(() => {
   console.log('Routes registered successfully');

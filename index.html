@@ -1,74 +1,30 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TypingMaster - Test de Dactylographie</title>
-    <style>
-        body {
-            font-family: system-ui, -apple-system, sans-serif;
-            background: #0a0a0a;
-            color: #fff;
-            margin: 0;
-            padding: 40px 20px;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .container {
-            max-width: 600px;
-            text-align: center;
-        }
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(45deg, #3b82f6, #06b6d4);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            opacity: 0.8;
-        }
-        .loading {
-            display: inline-block;
-            width: 50px;
-            height: 50px;
-            border: 3px solid #333;
-            border-top: 3px solid #3b82f6;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .error {
-            background: #991b1b;
-            padding: 1rem;
-            border-radius: 8px;
-            margin: 1rem 0;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>TypingMaster</h1>
-        <p>Test de dactylographie avancé avec fonctionnalités premium</p>
-        <div class="loading"></div>
-        <p>Chargement de l'application...</p>
-        <div id="error" class="error" style="display: none;">
-            <p>Erreur de chargement. Veuillez réessayer.</p>
-        </div>
-    </div>
+    <meta name="description" content="Améliorez votre vitesse de frappe avec TypingMaster - Test de dactylographie professionnel avec statistiques temps réel, modes multiples et classement global." />
+    <meta name="keywords" content="dactylographie, frappe, vitesse, WPM, test, entraînement, clavier" />
+    <meta name="author" content="TypingMaster" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://typing-master.vercel.app/" />
+    <meta property="og:title" content="TypingMaster - Test de Dactylographie" />
+    <meta property="og:description" content="Améliorez votre vitesse de frappe avec TypingMaster - Test de dactylographie professionnel avec statistiques temps réel, modes multiples et classement global." />
+    <meta property="og:image" content="https://typing-master.vercel.app/og-image.png" />
 
-    <script>
-        // Rediriger vers l'app React après un court délai
-        setTimeout(() => {
-            window.location.href = '/app';
-        }, 2000);
-    </script>
-</body>
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://typing-master.vercel.app/" />
+    <meta property="twitter:title" content="TypingMaster - Test de Dactylographie" />
+    <meta property="twitter:description" content="Améliorez votre vitesse de frappe avec TypingMaster - Test de dactylographie professionnel avec statistiques temps réel, modes multiples et classement global." />
+    <meta property="twitter:image" content="https://typing-master.vercel.app/og-image.png" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>

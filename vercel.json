@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "api/index.ts",
-      "use": "@vercel/node"
+  "buildCommand": "vite build --outDir dist/public",
+  "outputDirectory": "dist/public",
+  "functions": {
+    "api/index.ts": {
+      "runtime": "@vercel/node"
     }
-  ],
+  },
   "routes": [
     {
       "src": "/api/(.*)",
@@ -14,6 +15,12 @@
     {
       "src": "/(.*)",
       "dest": "/index.html"
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
