@@ -1,0 +1,32 @@
+[19:10:29.648] Running build in Washington, D.C., USA (East) – iad1
+[19:10:29.648] Build machine configuration: 2 cores, 8 GB
+[19:10:29.686] Cloning github.com/BenjaminBerns/typing-master (Branch: main, Commit: 44489a3)
+[19:10:30.947] Previous build caches not available
+[19:10:31.067] Cloning completed: 1.381s
+[19:10:31.387] Running "vercel build"
+[19:10:31.843] Vercel CLI 44.3.0
+[19:10:32.560] > Installing Builder: @vercel/node@3.0.0
+[19:10:42.573] Installing dependencies...
+[19:10:47.034] npm warn deprecated @esbuild-kit/esm-loader@2.6.5: Merged into tsx: https://tsx.is
+[19:10:47.047] npm warn deprecated @esbuild-kit/core-utils@3.3.2: Merged into tsx: https://tsx.is
+[19:10:52.057] 
+[19:10:52.058] added 499 packages in 9s
+[19:10:52.058] 
+[19:10:52.059] 67 packages are looking for funding
+[19:10:52.059]   run `npm fund` for details
+[19:10:52.360] [36mvite v5.4.19 [32mbuilding for production...[36m[39m
+[19:10:52.407] transforming...
+[19:10:52.689] Browserslist: browsers data (caniuse-lite) is 9 months old. Please run:
+[19:10:52.689]   npx update-browserslist-db@latest
+[19:10:52.690]   Why you should do it regularly: https://github.com/browserslist/update-db#readme
+[19:10:56.493] [32m✓[39m 1737 modules transformed.
+[19:10:56.797] rendering chunks...
+[19:10:56.808] computing gzip size...
+[19:10:56.823] [2mdist/public/[22m[32mindex.html                 [39m[1m[2m  0.63 kB[22m[1m[22m[2m │ gzip:   0.38 kB[22m
+[19:10:56.823] [2mdist/public/[22m[2massets/[22m[35mindex-EIp5ikoj.css  [39m[1m[2m 73.79 kB[22m[1m[22m[2m │ gzip:  12.61 kB[22m
+[19:10:56.823] [2mdist/public/[22m[2massets/[22m[36mindex-at6fjZ2y.js   [39m[1m[2m418.96 kB[22m[1m[22m[2m │ gzip: 126.44 kB[22m
+[19:10:56.826] [32m✓ built in 4.44s[39m
+[19:10:56.861] Error: No Output Directory named "public" found after the Build completed. You can configure the Output Directory in your Project Settings.
+[19:10:56.861] Learn More: https://vercel.link/missing-public-directory
+[19:10:57.223] 
+[19:11:00.133] Exiting build container
