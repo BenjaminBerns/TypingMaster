@@ -4,8 +4,8 @@
       "src": "package.json",
       "use": "@vercel/static-build",
       "config": {
-        "buildCommand": "vite build --outDir public",
-        "outputDirectory": "public"
+        "buildCommand": "vite build",
+        "outputDirectory": "dist/public"
       }
     },
     {

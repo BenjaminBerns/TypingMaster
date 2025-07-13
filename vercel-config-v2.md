@@ -1,15 +1,16 @@
 # Vercel Configuration V2
 
 ## Problème identifié
-La nouvelle syntaxe `buildCommand` + `outputDirectory` ne fonctionne pas correctement.
+Le projet utilise `dist/public` comme sortie (vite.config.ts ligne 28), pas `public`.
 
 ## Solution appliquée
-Retour à la syntaxe classique `builds` avec `@vercel/static-build` pour le frontend.
+- buildCommand: `vite build` (utilise la config Vite existante)
+- outputDirectory: `dist/public` (correspond à la configuration Vite)
 
 ## Configuration
-- Frontend: `@vercel/static-build` avec buildCommand personnalisé
+- Frontend: `@vercel/static-build` avec le dossier correct
 - Backend: `@vercel/node@3.0.0` pour l'API
 - Routes: Configuration classique pour SPA
 
 ## Résultat attendu
-Le build créera `public/` et Vercel le trouvera via `@vercel/static-build`.
+Le build créera `dist/public/` et Vercel le trouvera correctement.
