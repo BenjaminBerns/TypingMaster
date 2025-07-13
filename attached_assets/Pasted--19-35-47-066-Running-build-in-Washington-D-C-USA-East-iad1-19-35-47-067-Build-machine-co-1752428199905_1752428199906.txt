@@ -1,0 +1,42 @@
+[19:35:47.066] Running build in Washington, D.C., USA (East) – iad1
+[19:35:47.067] Build machine configuration: 2 cores, 8 GB
+[19:35:47.128] Cloning github.com/BenjaminBerns/typing-master (Branch: main, Commit: 6fdcb4e)
+[19:35:47.348] Previous build caches not available
+[19:35:47.549] Cloning completed: 420.000ms
+[19:35:47.858] Running "vercel build"
+[19:35:48.296] Vercel CLI 44.3.0
+[19:35:48.466] WARN! Due to `builds` existing in your configuration file, the Build and Development Settings defined in your Project Settings will not apply. Learn More: https://vercel.link/unused-build-settings
+[19:35:49.073] > Installing Builder: @vercel/node@3.0.0
+[19:35:57.571] Installing dependencies...
+[19:36:02.043] npm warn deprecated @esbuild-kit/esm-loader@2.6.5: Merged into tsx: https://tsx.is
+[19:36:02.056] npm warn deprecated @esbuild-kit/core-utils@3.3.2: Merged into tsx: https://tsx.is
+[19:36:07.413] 
+[19:36:07.414] added 499 packages in 10s
+[19:36:07.414] 
+[19:36:07.414] 67 packages are looking for funding
+[19:36:07.415]   run `npm fund` for details
+[19:36:07.478] Running "npm run build"
+[19:36:07.659] 
+[19:36:07.660] > rest-express@1.0.0 build
+[19:36:07.660] > vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist
+[19:36:07.660] 
+[19:36:07.920] [36mvite v5.4.19 [32mbuilding for production...[36m[39m
+[19:36:07.973] transforming...
+[19:36:08.247] Browserslist: browsers data (caniuse-lite) is 9 months old. Please run:
+[19:36:08.248]   npx update-browserslist-db@latest
+[19:36:08.248]   Why you should do it regularly: https://github.com/browserslist/update-db#readme
+[19:36:12.346] [32m✓[39m 1737 modules transformed.
+[19:36:12.665] rendering chunks...
+[19:36:12.676] computing gzip size...
+[19:36:12.692] [2m../dist/public/[22m[32mindex.html                 [39m[1m[2m  0.63 kB[22m[1m[22m[2m │ gzip:   0.38 kB[22m
+[19:36:12.692] [2m../dist/public/[22m[2massets/[22m[35mindex-EIp5ikoj.css  [39m[1m[2m 73.79 kB[22m[1m[22m[2m │ gzip:  12.61 kB[22m
+[19:36:12.693] [2m../dist/public/[22m[2massets/[22m[36mindex-at6fjZ2y.js   [39m[1m[2m418.96 kB[22m[1m[22m[2m │ gzip: 126.44 kB[22m
+[19:36:12.693] [32m✓ built in 4.75s[39m
+[19:36:12.731] 
+[19:36:12.731]   dist/index.js  35.8kb
+[19:36:12.731] 
+[19:36:12.731] ⚡ Done in 9ms
+[19:36:12.778] Error: Found invalid Node.js Version: "22.x". Please set Node.js Version to 18.x in your Project Settings to use Node.js 18.
+[19:36:12.778] Learn More: http://vercel.link/node-version
+[19:36:13.006] 
+[19:36:15.529] Exiting build container

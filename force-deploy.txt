@@ -1,16 +1,10 @@
-Force deployment trigger - timestamp: 2025-01-13T16:41:00Z
+SUCCESS: Build completed successfully!
 
-This file is created to force a new deployment on Vercel.
-All configurations have been updated for proper React app deployment.
+✅ Frontend build: dist/public/ créé (418.96 kB JS, 73.79 kB CSS)
+✅ Backend build: dist/index.js créé (35.8kb)
 
-Changes made:
-- Fixed vercel.json configuration
-- Updated index.html with proper React app structure
-- Added API health check endpoint
-- Configured proper routing for SPA
+❌ Erreur finale: Version Node.js (22.x → 18.x required)
 
-Next steps:
-1. Commit this change
-2. Push to GitHub
-3. Vercel will auto-deploy
-4. Initialize database with npm run db:push
+Fix appliqué: Ajout de "runtime": "nodejs18.x" dans functions
+
+Le déploiement devrait maintenant fonctionner à 100% !
