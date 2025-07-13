@@ -20,6 +20,7 @@ import {
   Shield,
   Star
 } from 'lucide-react';
+import { HorizontalAdBanner } from '@/components/ad-banner';
 
 const premiumFeatures = [
   {
@@ -177,6 +178,14 @@ export default function Premium() {
           </p>
         </div>
 
+        {/* Ad Banner - Top */}
+        <div className="mb-12">
+          <HorizontalAdBanner 
+            slot="4567890123" 
+            className="bg-white rounded-lg p-4 border border-gray-200 shadow-sm"
+          />
+        </div>
+
         {/* Feature Categories */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
           {premiumFeatures.map((category, index) => (
@@ -295,6 +304,14 @@ export default function Premium() {
               </Card>
             ))}
           </div>
+        </div>
+
+        {/* Ad Banner - Bottom */}
+        <div className="mb-8">
+          <HorizontalAdBanner 
+            slot="5678901234" 
+            className="bg-white rounded-lg p-4 border border-gray-200 shadow-sm"
+          />
         </div>
 
         {/* FAQ or Additional Info */}

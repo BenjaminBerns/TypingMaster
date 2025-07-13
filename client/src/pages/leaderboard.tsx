@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { Link } from 'wouter';
+import { HorizontalAdBanner } from '@/components/ad-banner';
 
 type Region = 'world' | 'continent' | 'country';
 type Continent = 'Europe' | 'Amérique du Nord' | 'Amérique du Sud' | 'Asie' | 'Afrique' | 'Océanie';
@@ -159,6 +160,14 @@ export default function Leaderboard() {
               </div>
             </CardHeader>
           </Card>
+
+          {/* Ad Banner - Top */}
+          <div className="mb-6">
+            <HorizontalAdBanner 
+              slot="2345678901" 
+              className="bg-gray-50 rounded-lg p-4 border border-gray-200"
+            />
+          </div>
 
           {/* Filters */}
           <Card className="mb-6">
@@ -404,6 +413,14 @@ export default function Leaderboard() {
               )}
             </CardContent>
           </Card>
+
+          {/* Ad Banner - Bottom */}
+          <div className="mb-6">
+            <HorizontalAdBanner 
+              slot="3456789012" 
+              className="bg-gray-50 rounded-lg p-4 border border-gray-200"
+            />
+          </div>
 
           {/* Call to Action */}
           <Card className="mt-6 bg-gradient-to-r from-green-500 to-blue-500 text-white">

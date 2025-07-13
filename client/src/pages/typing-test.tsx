@@ -14,6 +14,7 @@ import { Button } from '@/components/ui/button';
 import { Link } from 'wouter';
 import { SignupModal } from '@/components/signup-modal';
 import { PremiumBanner } from '@/components/premium-banner';
+import { HorizontalAdBanner } from '@/components/ad-banner';
 import { Crown, Trophy } from 'lucide-react';
 
 export default function TypingTest() {
@@ -187,9 +188,25 @@ export default function TypingTest() {
           <VirtualKeyboard lastKeyPressed={state.lastKeyPressed} />
         </div>
 
+        {/* Ad Banner - Horizontal */}
+        <div className="mb-8">
+          <HorizontalAdBanner 
+            slot="1234567890" 
+            className="bg-gray-50 rounded-lg p-4 border border-gray-200"
+          />
+        </div>
+
         {/* Performance History */}
         <div className="mb-8" id="history">
           <PerformanceHistory />
+        </div>
+
+        {/* Ad Banner - Bottom */}
+        <div className="mb-8">
+          <HorizontalAdBanner 
+            slot="0987654321" 
+            className="bg-gray-50 rounded-lg p-4 border border-gray-200"
+          />
         </div>
 
         {/* Footer */}
