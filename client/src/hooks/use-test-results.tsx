@@ -10,7 +10,7 @@ export function useTestResults() {
 
   const saveTestResult = useMutation({
     mutationFn: async (result: InsertTestResult) => {
-      return await apiRequest("/api/test-results", "POST", result);
+      return await apiRequest("POST", "/api/test-results", result);
     },
     onSuccess: () => {
       // Invalidate and refetch user test results if user is authenticated

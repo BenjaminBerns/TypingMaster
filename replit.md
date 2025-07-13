@@ -10,6 +10,8 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes
 
+- **January 12, 2025**: Added persistent global navigation bar for seamless app navigation
+- **January 12, 2025**: Fixed test result saving bug (corrected API request parameter order)
 - **January 12, 2025**: Added challenge system with visual progress indicators and target WPM markers
 - **January 12, 2025**: Fixed Premium button color contrast issue (white text on white background)
 - **January 12, 2025**: Implemented user challenge functionality with URL parameters and progress tracking
