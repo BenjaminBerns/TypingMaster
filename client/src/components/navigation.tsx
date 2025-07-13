@@ -10,7 +10,8 @@ import {
   Keyboard, 
   BarChart3,
   Menu,
-  X
+  X,
+  Users
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -21,6 +22,7 @@ export function Navigation() {
 
   const navItems = [
     { path: '/', label: 'Test de frappe', icon: <Keyboard className="w-4 h-4" /> },
+    { path: '/multiplayer', label: 'Multijoueur', icon: <Users className="w-4 h-4" /> },
     { path: '/leaderboard', label: 'Classement', icon: <Trophy className="w-4 h-4" /> },
     { path: '/premium', label: 'Premium', icon: <Crown className="w-4 h-4" /> },
   ];

@@ -13,6 +13,8 @@ Preferred communication style: Simple, everyday language.
 - **January 12, 2025**: Added persistent global navigation bar for seamless app navigation
 - **January 12, 2025**: Fixed test result saving bug (corrected API request parameter order)
 - **January 12, 2025**: Integrated Google Ads subtly with reusable AdBanner component (2 ads per page)
+- **January 12, 2025**: Moved multiplayer mode to free tier - now available to all users
+- **January 12, 2025**: Added comprehensive multiplayer page with room creation and real-time features
 - **January 12, 2025**: Added challenge system with visual progress indicators and target WPM markers
 - **January 12, 2025**: Fixed Premium button color contrast issue (white text on white background)
 - **January 12, 2025**: Implemented user challenge functionality with URL parameters and progress tracking
@@ -20,7 +22,6 @@ Preferred communication style: Simple, everyday language.
 - **January 12, 2025**: Added dynamic region-specific filtering (World/Continent/Country selection)
 - **January 12, 2025**: Implemented realistic user profiles with country-specific names and performance data
 - **January 12, 2025**: Created global leaderboard system with region and time filters
-- **January 12, 2025**: Moved multiplayer mode to free tier - now available to all users
 - **January 12, 2025**: Added comprehensive ranking system with World/Continent/Country filters
 - **January 12, 2025**: Implemented time-based leaderboard filtering (Day/Week/Month/Year/All-time)
 - **January 12, 2025**: Implemented comprehensive premium features system with advanced database schema

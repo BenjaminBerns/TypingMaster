@@ -12,6 +12,7 @@ import Profile from "@/pages/profile";
 import Premium from "@/pages/premium";
 import Leaderboard from "@/pages/leaderboard";
 import UserProfile from "@/pages/user-profile";
+import Multiplayer from "@/pages/multiplayer";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -28,6 +29,7 @@ function Router() {
       <Route path="/profile" component={isAuthenticated ? Profile : NotFound} />
       <Route path="/premium" component={Premium} />
       <Route path="/leaderboard" component={Leaderboard} />
+      <Route path="/multiplayer" component={Multiplayer} />
       <Route path="/users/:userId" component={UserProfile} />
       <Route component={NotFound} />
     </Switch>
