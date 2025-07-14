@@ -12,6 +12,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.send('google.com, pub-3442421625172943, DIRECT, f08c47fec0942fa0');
   });
 
+
+
   // Auth middleware
   await setupAuth(app);
 
