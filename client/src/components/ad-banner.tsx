@@ -23,7 +23,7 @@ export function AdBanner({
       if (!document.querySelector('script[src*="pagead2.googlesyndication.com"]')) {
         const script = document.createElement('script');
         script.async = true;
-        script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX';
+        script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3442421625172943';
         script.crossOrigin = 'anonymous';
         document.head.appendChild(script);
       }
@@ -47,7 +47,7 @@ export function AdBanner({
         ref={adRef}
         className="adsbygoogle"
         style={{ display: 'block', ...style }}
-        data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+        data-ad-client="ca-pub-3442421625172943"
         data-ad-slot={slot}
         data-ad-format={format}
         data-full-width-responsive={responsive.toString()}
