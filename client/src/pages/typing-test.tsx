@@ -49,14 +49,6 @@ export default function TypingTest() {
   // Save result when test is completed (only once) and show signup modal for first test
   useEffect(() => {
     if (state.isCompleted && state.timeElapsed > 0 && !resultSavedRef.current) {
-      console.log("🔍 Test completed, saving result...", {
-        isCompleted: state.isCompleted,
-        timeElapsed: state.timeElapsed,
-        isAuthenticated,
-        wpm: state.wpm,
-        accuracy: state.accuracy
-      });
-      
       resultSavedRef.current = true;
       
       // Show signup modal for first test if user is not authenticated
@@ -78,14 +70,10 @@ export default function TypingTest() {
         wordsTyped,
       };
 
-      console.log("💾 Saving result data:", resultData);
-
       // Save result to database if authenticated, otherwise to localStorage
       if (isAuthenticated) {
-        console.log("✅ User authenticated, saving to database");
         saveTestResult(resultData);
       } else {
-        console.log("📱 User not authenticated, saving to localStorage");
         saveLocalResult(resultData);
       }
     }
