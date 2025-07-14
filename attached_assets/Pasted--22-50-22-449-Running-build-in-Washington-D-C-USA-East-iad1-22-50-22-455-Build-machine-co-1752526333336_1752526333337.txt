@@ -1,0 +1,33 @@
+[22:50:22.449] Running build in Washington, D.C., USA (East) – iad1
+[22:50:22.455] Build machine configuration: 2 cores, 8 GB
+[22:50:22.498] Cloning github.com/BenjaminBerns/TypingMaster (Branch: main, Commit: 8b4e9f0)
+[22:50:23.551] Cloning completed: 1.047s
+[22:50:24.423] Restored build cache from previous deployment (67hrWbxoGCTkW2g8rpGR4t42NHjP)
+[22:50:26.857] Running "vercel build"
+[22:50:27.494] Vercel CLI 44.3.0
+[22:50:27.684] WARN! Due to `builds` existing in your configuration file, the Build and Development Settings defined in your Project Settings will not apply. Learn More: https://vercel.link/unused-build-settings
+[22:50:28.342] Warning: Due to "engines": { "node": "18.x" } in your `package.json` file, the Node.js Version defined in your Project Settings ("22.x") will not apply, Node.js Version "18.x" will be used instead. Learn More: http://vercel.link/node-version
+[22:50:28.356] Installing dependencies...
+[22:50:30.145] 
+[22:50:30.146] up to date in 1s
+[22:50:30.146] 
+[22:50:30.146] 68 packages are looking for funding
+[22:50:30.146]   run `npm fund` for details
+[22:50:30.165] Running "npm run build"
+[22:50:30.291] 
+[22:50:30.291] > rest-express@1.0.0 build
+[22:50:30.292] > vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist
+[22:50:30.292] 
+[22:50:30.569] [36mvite v5.4.19 [32mbuilding for production...[36m[39m
+[22:50:30.928] transforming...
+[22:50:30.994] Browserslist: browsers data (caniuse-lite) is 9 months old. Please run:
+[22:50:30.997]   npx update-browserslist-db@latest
+[22:50:30.997]   Why you should do it regularly: https://github.com/browserslist/update-db#readme
+[22:50:32.511] [32m✓[39m 38 modules transformed.
+[22:50:32.514] [31mx[39m Build failed in 1.61s
+[22:50:32.518] [31merror during build:
+[22:50:32.518] [31m[vite:load-fallback] Could not load /vercel/path0/client/src/components/google-ads-script (imported by client/src/App.tsx): ENOENT: no such file or directory, open '/vercel/path0/client/src/components/google-ads-script'[31m
+[22:50:32.519] Error: Could not load /vercel/path0/client/src/components/google-ads-script (imported by client/src/App.tsx): ENOENT: no such file or directory, open '/vercel/path0/client/src/components/google-ads-script'[39m
+[22:50:32.546] Error: Command "npm run build" exited with 1
+[22:50:32.759] 
+[22:50:35.722] Exiting build container

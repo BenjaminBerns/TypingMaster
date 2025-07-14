@@ -4,8 +4,8 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Navigation } from "@/components/navigation";
-import { GoogleAdsScript } from "@/components/google-ads-script";
 import { useAuth } from "@/hooks/useAuth";
+import { useEffect } from "react";
 import NotFound from "@/pages/not-found";
 import TypingTest from "@/pages/typing-test";
 import Landing from "@/pages/landing";
@@ -38,10 +38,25 @@ function Router() {
 }
 
 function App() {
+  // Load Google Ads script on app initialization
+  useEffect(() => {
+    // Check if the script is already loaded
+    if (document.querySelector('script[src*="pagead2.googlesyndication.com"]')) {
+      return;
+    }
+
+    // Create and append the Google Ads script
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3442421625172943';
+    script.crossOrigin = 'anonymous';
+    
+    document.head.appendChild(script);
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <GoogleAdsScript />
         <div className="min-h-screen bg-gray-50">
           <Navigation />
           <main className="pb-8">
