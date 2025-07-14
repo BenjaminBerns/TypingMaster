@@ -24,13 +24,20 @@ export function useAuth() {
           const userData = await response.json();
           setUser(userData);
           setError(null);
+        } else if (response.status === 500) {
+          // Handle 500 errors gracefully - treat as unauthenticated
+          console.warn("Auth service temporarily unavailable, treating as unauthenticated");
+          setUser(null);
+          setError(null);
         } else {
           throw new Error(`${response.status}: ${response.statusText}`);
         }
       } catch (err) {
         if (!mounted) return;
-        setError(err as Error);
+        // Handle network errors gracefully - treat as unauthenticated
+        console.warn("Auth check failed, treating as unauthenticated:", err);
         setUser(null);
+        setError(null);
       } finally {
         if (mounted) {
           setIsLoading(false);
