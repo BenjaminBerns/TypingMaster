@@ -1,0 +1,83 @@
+Voici les principaux points à corriger sur typing‑master‑kappa.vercel.app afin de respecter les règles d’AdSense (notamment celles passées en revue dans votre lien) :
+
+1️⃣ Politique de confidentialité & cookies
+Le site n’affiche aucune politique de confidentialité, ni mention des cookies ou du tracking.
+
+Obligation : informer explicitement les visiteurs — en français — de l’usage de cookies tiers (notamment Google/DoubleClick), et proposer un moyen de refus (opt‑out) 
+wpadvancedads.com
++2
+AdPushup
++2
+blog.google
++2
+.
+
+2️⃣ Consentement en EEA/UK
+Si votre audience inclut l’Union Européenne (service hébergé à Paris), le site doit intégrer un Consent Management Platform (CMP) compatible RGPD.
+
+Il est exigé depuis mai 2023 d’obtenir le consentement avant de servir des pubs personnalisées 
+blog.google
+.
+
+3️⃣ Contenu original et droits d’auteur
+Assurez-vous que tout contenu (texte, images, audio) vous appartient ou dispose des droits nécessaires.
+
+Les contenus protégés mis en ligne sans permission entraînent le blocage des publicités .
+
+4️⃣ Placement et étiquetage des annonces
+Lorsqu’elles seront présentes, les annonces ne doivent pas être intégrées dans des boîtes flottantes, pages principales sans contenu, emails ou pop‑ups 
+arXiv
++6
+Assistance Google
++6
+Wikipédia
++6
+.
+
+Elles doivent être clairement identifiées (“Ads, Annonces, ou Sponsored Links” sont les seules étiquettes autorisées).
+
+Ne jamais inciter l’internaute à cliquer (“Cliquez ici pour soutenir le site”, flèches dirigeant vers les pubs, etc.) 
+services.google.com
++3
+Assistance Google
++3
+AdPushup
++3
+.
+
+5️⃣ Navigation transparente / absence de redirections
+Le site ne doit pas comporter de pop‑ups, redirections automatiques, ni comportement trompeur (liens stylisés comme publicités) .
+
+Il doit rester facile d’accès et d’usage, sans interférences.
+
+6️⃣ Trafic et clics artificiels
+Il est strictement interdit de générer ou encourager des clics artificiels (auto‑clics, bots, programmes incitant à cliquer) 
+AdPushup
++2
+Assistance Google
++2
+Wikipédia
++2
+.
+
+Aucun incitatif ou mention pour cliquer sur les pubs ne doit exister.
+
+✅ Récapitulatif des actions à mener
+Point à corriger	Solution recommandée
+Politique de confidentialité & cookies	Publier une page dédiée, lien visible en pied de page, mention G + autres tiers, méthodes d’opt‑out
+Consentement RGPD/EEA	Installer un CMP conforme (ex. : Cookiebot, OneTrust), bloquer les pubs automatisées tant que le visiteur n’a pas consenti
+Contenu / copyrights	Vérifier que tout le contenu est original ou sous licence (stock images, textes…)
+Étiquetage des annonces	Prévoir les zones pub clairement marquées, éviter tout encouragement au clic
+UX / navigation	Supprimer tout pop‑up ou comportement trompeur
+Trafic & clics	Aucun script, programme ou incitation pour cliquer sur les annonces
+
+🧭 En résumé
+Pour pouvoir intégrer AdSense dans les règles, ce site doit absolument ajouter une politique de confidentialité avec gestion des cookies, un système de consentement RGPD, vérifier les droits liés au contenu hébergé, et préparer un placement d'annonces conforme (étiquettes, navigation claire, interdiction d'incitation au clic).
+
+Ces corrections sont indispensables pour éviter :
+
+le blocage des publicités,
+
+la suspension du compte AdSense,
+
+voire des pénalités vis-à-vis des utilisateurs et des lois sur la protection des données.

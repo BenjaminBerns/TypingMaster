@@ -1,4 +1,5 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { AlertCircle } from 'lucide-react';
 
 interface AdBannerProps {
   slot: string;
@@ -16,33 +17,76 @@ export function AdBanner({
   style 
 }: AdBannerProps) {
   const adRef = useRef<HTMLDivElement>(null);
+  const [hasConsent, setHasConsent] = useState(false);
 
   useEffect(() => {
-    try {
-      // Load Google AdSense script if not already loaded
-      if (!document.querySelector('script[src*="pagead2.googlesyndication.com"]')) {
-        const script = document.createElement('script');
-        script.async = true;
-        script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3442421625172943';
-        script.crossOrigin = 'anonymous';
-        document.head.appendChild(script);
+    // Check for advertising consent
+    const checkConsent = () => {
+      const consent = localStorage.getItem('cookie-consent');
+      if (consent) {
+        const preferences = JSON.parse(consent);
+        setHasConsent(preferences.advertising);
+      } else {
+        setHasConsent(false);
       }
+    };
 
-      // Initialize the ad
-      if (adRef.current && (window as any).adsbygoogle) {
-        (window as any).adsbygoogle.push({});
+    checkConsent();
+
+    // Listen for consent changes
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'cookie-consent') {
+        checkConsent();
       }
-    } catch (error) {
-      console.error('Error loading ad:', error);
-    }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
   }, []);
+
+  useEffect(() => {
+    if (hasConsent) {
+      try {
+        // Initialize the ad
+        if (adRef.current && (window as any).adsbygoogle) {
+          (window as any).adsbygoogle.push({});
+        }
+      } catch (error) {
+        console.error('Error loading ad:', error);
+      }
+    }
+  }, [hasConsent]);
+
+  if (!hasConsent) {
+    return (
+      <div 
+        className={`ad-placeholder border-2 border-dashed border-gray-300 rounded-lg p-6 text-center bg-gray-50 ${className}`}
+        style={style}
+      >
+        <AlertCircle className="w-8 h-8 text-gray-400 mx-auto mb-3" />
+        <p className="text-sm text-gray-600 mb-2">
+          <strong>Annonces</strong>
+        </p>
+        <p className="text-xs text-gray-500">
+          Publicité désactivée. Acceptez les cookies publicitaires pour voir les annonces.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div 
       className={`ad-container ${className}`}
       style={style}
     >
-      <div className="text-xs text-gray-400 mb-1 text-center">Publicité</div>
+      {/* Étiquette obligatoire AdSense */}
+      <div className="text-xs text-gray-500 mb-2 text-center">
+        <span className="bg-gray-100 px-2 py-1 rounded">Annonces</span>
+      </div>
+      
       <ins
         ref={adRef}
         className="adsbygoogle"
