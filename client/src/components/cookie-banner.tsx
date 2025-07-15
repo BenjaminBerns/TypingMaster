@@ -40,6 +40,9 @@ export function CookieBanner() {
     localStorage.setItem('cookie-consent', JSON.stringify(allAccepted));
     setShowBanner(false);
     
+    // Notify other components about consent update
+    window.dispatchEvent(new CustomEvent('cookie-consent-updated'));
+    
     // Activer Google Ads si accepté
     if (allAccepted.advertising) {
       enableGoogleAds();
@@ -55,11 +58,17 @@ export function CookieBanner() {
     setPreferences(essentialOnly);
     localStorage.setItem('cookie-consent', JSON.stringify(essentialOnly));
     setShowBanner(false);
+    
+    // Notify other components about consent update
+    window.dispatchEvent(new CustomEvent('cookie-consent-updated'));
   };
 
   const savePreferences = () => {
     localStorage.setItem('cookie-consent', JSON.stringify(preferences));
     setShowBanner(false);
+    
+    // Notify other components about consent update
+    window.dispatchEvent(new CustomEvent('cookie-consent-updated'));
     
     // Activer Google Ads si accepté
     if (preferences.advertising) {

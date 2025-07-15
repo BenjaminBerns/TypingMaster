@@ -24,8 +24,13 @@ export function AdBanner({
     const checkConsent = () => {
       const consent = localStorage.getItem('cookie-consent');
       if (consent) {
-        const preferences = JSON.parse(consent);
-        setHasConsent(preferences.advertising);
+        try {
+          const preferences = JSON.parse(consent);
+          setHasConsent(preferences.advertising === true);
+        } catch (error) {
+          console.error('Error parsing consent:', error);
+          setHasConsent(false);
+        }
       } else {
         setHasConsent(false);
       }
@@ -40,10 +45,17 @@ export function AdBanner({
       }
     };
 
+    // Also listen for custom events (for same-tab updates)
+    const handleConsentUpdate = () => {
+      checkConsent();
+    };
+
     window.addEventListener('storage', handleStorageChange);
+    window.addEventListener('cookie-consent-updated', handleConsentUpdate);
     
     return () => {
       window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('cookie-consent-updated', handleConsentUpdate);
     };
   }, []);
 
